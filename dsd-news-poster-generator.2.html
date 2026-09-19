@@ -29,7 +29,7 @@ h2 { font-weight:700; }
 
 /* ===== พาดหัวข่าว ===== */
 .headline{ width:100%; display:flex; align-items:center; overflow:hidden; box-sizing:border-box; margin-bottom:6px; }
-.headline h1{ font-weight:var(--hl-weight) !important; line-height:1.2; width:100%; margin:0; letter-spacing:-.3px; }
+.headline h1{ font-weight:var(--hl-weight) !important; line-height:1.2; width:100%; margin:0; letter-spacing:-.3px; text-align:center; }
 .hl-ribbon{ background:linear-gradient(100deg,var(--accent) 0%,var(--accent2) 100%);
     border-left:10px solid rgba(255,255,255,.85); border-radius:4px; padding:8px 14px;
     box-shadow:0 3px 8px rgba(0,0,0,.18); }
@@ -40,7 +40,8 @@ h2 { font-weight:700; }
     border-radius:3px; padding:8px 14px; box-shadow:0 2px 6px rgba(0,0,0,.12); }
 .hl-boxed h1{ color:#111827; }
 
-.news-detail-text{ line-height:1.5; }
+.news-detail-text{ line-height:1.5; min-height:0; text-justify:inter-character; white-space:pre-wrap; text-indent:2em; }
+.headline h1{ overflow-wrap:break-word; word-break:break-word; }
 .news-reporter-text{ font-size:10pt !important; font-style:italic; padding-right:var(--side-pad); }
 
 .img-grid{ display:grid; gap:0; width:100%; }
@@ -116,25 +117,12 @@ h2 { font-weight:700; }
                     </div>
                 </div>
 
-                <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="hlAuto" checked class="w-4 h-4 accent-purple-600">
-                    <span class="hint text-gray-700">ย่ออัตโนมัติเมื่อพาดหัวยาว</span>
-                </label>
-
                 <div>
                     <div class="flex justify-between">
-                        <span class="hint text-gray-600" id="hlMaxLabel">ขนาดสูงสุด</span>
+                        <span class="hint text-gray-600" id="hlMaxLabel">ขนาดตัวอักษรพาดหัว</span>
                         <span class="hint font-bold text-purple-800" id="hlMaxVal">30.0 pt</span>
                     </div>
                     <input type="range" id="hlMax" min="12" max="44" step="0.5" value="30" class="w-full accent-purple-600">
-                </div>
-
-                <div id="hlMinWrap">
-                    <div class="flex justify-between">
-                        <span class="hint text-gray-600">ขนาดต่ำสุด</span>
-                        <span class="hint font-bold text-purple-800" id="hlMinVal">14.0 pt</span>
-                    </div>
-                    <input type="range" id="hlMin" min="8" max="24" step="0.5" value="14" class="w-full accent-purple-600">
                 </div>
 
                 <div>
@@ -207,8 +195,13 @@ h2 { font-weight:700; }
         <div>
             <div class="flex justify-between items-center mb-1">
                 <label class="block font-semibold text-gray-700">รายละเอียดข่าว</label>
-                <span id="fontSizeBadge" class="bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded">14.0 pt</span>
+                <div class="flex items-center gap-2">
+                    <span id="fontSizeBadge" class="bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded">14.0 pt</span>
+                    <button id="detailMinus" class="mini-btn" title="ลดขนาด 0.5pt">A−</button>
+                    <button id="detailPlus"  class="mini-btn" title="เพิ่มขนาด 0.5pt">A+</button>
+                </div>
             </div>
+            <input type="range" id="detailSize" min="8" max="28" step="0.5" value="14" class="w-full mb-2">
             <textarea id="newsDetailInput" rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 leading-relaxed" placeholder="กรอกเนื้อหาข่าวที่นี่..."></textarea>
         </div>
 
@@ -227,7 +220,7 @@ h2 { font-weight:700; }
         </div>
     </div>
 
-    <div class="lg:col-span-7 bg-gray-200 p-4 rounded-xl border">
+    <div class="lg:col-span-7 bg-gray-200 p-4 rounded-xl border lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
         <div id="posterWrap" class="poster-wrap">
             <div id="posterCanvas" class="poster-canvas">
 
@@ -241,12 +234,12 @@ h2 { font-weight:700; }
 
                     <div id="imageGridContainer" class="img-grid grid-4 overflow-hidden shrink-0 bg-gray-200" style="height:450px"></div>
 
-                    <div class="w-full flex-1 mt-2 bg-white/95 flex flex-col overflow-hidden" style="padding:10px var(--side-pad)">
-                        <p id="previewDetail" class="news-detail-text text-gray-900 indent-8 text-justify flex-1 overflow-hidden">
+                    <div class="w-full flex-1 min-h-0 mt-2 bg-white/95 flex flex-col" style="padding:10px var(--side-pad)">
+                        <p id="previewDetail" contenteditable="true" spellcheck="false" class="news-detail-text text-gray-900 text-justify flex-1 outline-none focus:ring-2 focus:ring-blue-400 focus:ring-inset">
                             วันจันทร์ที่ 14 กันยายน 2569 เวลา 09.30 น. กองพัฒนามาตรฐานและทดสอบฝีมือแรงงาน...
                         </p>
                         <p id="previewReporter" class="news-reporter-text text-right font-medium text-gray-700 pt-2 border-t border-gray-200 mt-2 shrink-0">
-                            รายงานโดย : นางบุษกร เก้าเอี้ยน นักวิชาการพัฒนาฝีมือแรงงานปฏิบัติการ
+                            รายงานโดย : นางสาวญาญ์ณินท์  จันทร์วิเชียร นักวิชาการพัฒนาฝีมือแรงงานปฏิบัติการ
                         </p>
                     </div>
 
@@ -269,7 +262,8 @@ const detail=$('previewDetail'), reporter=$('previewReporter');
 const hlBox=$('headlineBox'), hlText=$('previewHeadline');
 const DEFAULT_TPL=bgTemplate.getAttribute('src');
 
-$('newsDetailInput').value=detail.textContent.trim();
+detail.textContent=detail.textContent.trim();
+$('newsDetailInput').value=detail.textContent;
 $('reporterInput').value=reporter.textContent.trim();
 $('headlineInput').value=hlText.textContent.trim();
 
@@ -326,11 +320,7 @@ function renderGrid(){
             const src=images[idx];
             const dims=imgDims.get(src);
             const cell=document.createElement('div');
-            cell.style.cssText=`overflow:hidden;height:100%;flex:${dims?dims.w/dims.h:1} 1 0;`;
-            const img=document.createElement('img');
-            img.src=src;
-            img.style.cssText='display:block;width:100%;height:100%;object-fit:cover;';
-            cell.appendChild(img);
+            cell.style.cssText=`overflow:hidden;height:100%;flex:${dims?dims.w/dims.h:1} 1 0;background-image:url("${src}");background-size:cover;background-position:center;`;
             rowEl.appendChild(cell);
             if(!dims){
                 const probe=new Image();
@@ -424,33 +414,17 @@ function scalePreview(){
 
 /* ===== ขนาดฟอนต์พาดหัว ===== */
 function fitHeadline(){
-    const auto=$('hlAuto').checked;
     const maxPt=parseFloat($('hlMax').value);
-    const minPt=Math.min(parseFloat($('hlMin').value),maxPt);
     const badge=$('hlSizeBadge');
 
-    $('hlMaxLabel').textContent=auto?'ขนาดสูงสุด':'ขนาดที่กำหนด';
-    $('hlMinWrap').style.display=auto?'block':'none';
     $('hlMaxVal').textContent=maxPt.toFixed(1)+' pt';
-    $('hlMinVal').textContent=minPt.toFixed(1)+' pt';
 
     const set=pt=>{ hlText.style.setProperty('font-size',pt+'pt','important');
         return hlText.scrollHeight<=hlText.clientHeight+1; };
 
-    if(!auto){
-        const ok=set(maxPt);
-        badge.textContent=maxPt.toFixed(1)+' pt'+(ok?'':' ⚠ ล้น');
-        badge.className=(ok?'bg-purple-200 text-purple-900':'bg-red-200 text-red-800')+' font-bold px-2 py-0.5 rounded';
-        return;
-    }
-    let low=minPt,high=maxPt,best=minPt;
-    if(set(maxPt)) best=maxPt;
-    else for(let i=0;i<24&&high-low>.05;i++){ const m=(low+high)/2;
-        if(set(m)){best=m;low=m;}else high=m; }
-    set(best);
-    const full=best>=maxPt-.05;
-    badge.textContent=best.toFixed(1)+' pt';
-    badge.className=(full?'bg-purple-200 text-purple-900':'bg-amber-100 text-amber-800')+' font-bold px-2 py-0.5 rounded';
+    const ok=set(maxPt);
+    badge.textContent=maxPt.toFixed(1)+' pt'+(ok?'':' ⚠ ล้น');
+    badge.className=(ok?'bg-purple-200 text-purple-900':'bg-red-200 text-red-800')+' font-bold px-2 py-0.5 rounded';
 }
 function nudgeHl(delta){
     const s=$('hlMax');
@@ -459,27 +433,53 @@ function nudgeHl(delta){
 }
 $('hlPlus').addEventListener('click',()=>nudgeHl(0.5));
 $('hlMinus').addEventListener('click',()=>nudgeHl(-0.5));
-['hlMax','hlMin','hlAuto'].forEach(id=>$(id).addEventListener('input',fitHeadline));
+$('hlMax').addEventListener('input',fitHeadline);
 
 /* ===== ขนาดฟอนต์เนื้อข่าว ===== */
 function fitText(){
-    const fits=pt=>{ detail.style.setProperty('font-size',pt+'pt','important');
-        return detail.scrollHeight<=detail.clientHeight+1; };
-    let low=8,high=14,best=8;
-    if(fits(14)) best=14;
-    else for(let i=0;i<24&&high-low>.05;i++){ const m=(low+high)/2;
-        if(fits(m)){best=m;low=m;}else high=m; }
-    detail.style.setProperty('font-size',best.toFixed(2)+'pt','important');
+    const pt=parseFloat($('detailSize').value);
+    detail.style.setProperty('font-size',pt+'pt','important');
+    const ok=detail.scrollHeight<=detail.clientHeight+1;
     const b=$('fontSizeBadge');
-    b.textContent=best.toFixed(1)+' pt';
-    b.className=(best>=13.95?'bg-green-100 text-green-800':'bg-amber-100 text-amber-800')+' font-bold px-2 py-0.5 rounded';
+    b.textContent=pt.toFixed(1)+' pt'+(ok?'':' ⚠ ล้น');
+    b.className=(ok?'bg-green-100 text-green-800':'bg-amber-100 text-amber-800')+' font-bold px-2 py-0.5 rounded';
 }
+function nudgeDetail(delta){
+    const s=$('detailSize');
+    s.value=Math.min(+s.max,Math.max(+s.min,parseFloat(s.value)+delta));
+    fitText();
+}
+$('detailPlus').addEventListener('click',()=>nudgeDetail(0.5));
+$('detailMinus').addEventListener('click',()=>nudgeDetail(-0.5));
+$('detailSize').addEventListener('input',fitText);
+
 
 ['sidePad','topPad','botPad','gridH','hlH','hlStyle','hlColor','hlFontColor','hlWeight'].forEach(id=>$(id).addEventListener('input',applyLayout));
 let hlFontColorTouched=false;
 $('hlFontColor').addEventListener('input',()=>{ hlFontColorTouched=true; });
 $('headlineInput').addEventListener('input',function(){ hlText.textContent=this.value||'พาดหัวข่าว...'; fitHeadline(); });
 $('newsDetailInput').addEventListener('input',function(){ detail.textContent=this.value||'กรุณากรอกเนื้อหาข่าว...'; fitText(); });
+detail.addEventListener('input',function(){ $('newsDetailInput').value=detail.innerText.trim(); fitText(); });
+/* กด Enter ในกล่องพรีวิวแล้วให้ขึ้นบรรทัดใหม่เฉย ๆ ไม่สร้างย่อหน้าใหม่ (แทรกตัวอักษรขึ้นบรรทัดใหม่ตรง ๆ ผ่าน Range API แทน execCommand เพื่อไม่ให้ browser แตกเป็น <p>/<div> ใหม่ที่มีการเยื้องซ้ำและฟอนต์รีเซ็ต) */
+detail.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+        e.preventDefault();
+        const sel=window.getSelection();
+        if(sel&&sel.rangeCount){
+            const range=sel.getRangeAt(0);
+            range.deleteContents();
+            const nl=document.createTextNode('\n');
+            range.insertNode(nl);
+            range.setStartAfter(nl);
+            range.setEndAfter(nl);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+        $('newsDetailInput').value=detail.innerText.trim();
+        fitText();
+    }
+});
 $('reporterInput').addEventListener('input',function(){ reporter.textContent=this.value||''; fitText(); });
 
 let downloadsCap=null;
@@ -513,39 +513,102 @@ async function offerDownload(filename,blob,btn,origLabel){
     }
 }
 
-$('downloadBtn').addEventListener('click',function(){
+/* ===== จัดกระจายตัวอักษรแบบไทย เฉพาะตอนบันทึกไฟล์ (html2canvas ไม่รองรับ text-justify)
+   มีเพดานระยะห่างและข้ามบรรทัดสั้นผิดปกติ กันปัญหาช่องว่างเว่อร์ ===== */
+function graphemes(text){
+    if(typeof Intl!=='undefined'&&Intl.Segmenter){
+        const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+        return Array.from(seg.segment(text),s=>s.segment);
+    }
+    return Array.from(text);
+}
+function justifyForExport(container){
+    const original=container.innerHTML;
+    const chars=graphemes(container.textContent);
+    container.contentEditable='false';
+    container.innerHTML='';
+    const frag=document.createDocumentFragment();
+    const spans=chars.map(ch=>{ const s=document.createElement('span'); s.textContent=ch; frag.appendChild(s); return s; });
+    container.appendChild(frag);
+    const lines=[]; let curTop=null, curLine=[];
+    spans.forEach(s=>{
+        const top=Math.round(s.offsetTop);
+        if(curTop===null||Math.abs(top-curTop)<1){ curLine.push(s); curTop=top; }
+        else { lines.push(curLine); curLine=[s]; curTop=top; }
+    });
+    if(curLine.length) lines.push(curLine);
+    const indentPx=parseFloat(getComputedStyle(container).textIndent)||0;
+    const fullW=container.clientWidth;
+    const fontPx=parseFloat(getComputedStyle(container).fontSize)||16;
+    const maxPer=fontPx*0.5;
+    lines.forEach((line,idx)=>{
+        const endsParagraph=line.some(s=>s.textContent==='\n'); // บรรทัดที่จบด้วยการเว้นบรรทัดเอง (ขึ้นย่อหน้าใหม่) ไม่ต้องกระจาย
+        if(idx===lines.length-1||endsParagraph||line.length<2) return;
+        const first=line[0], last=line[line.length-1];
+        const usedW=(last.offsetLeft+last.offsetWidth)-first.offsetLeft;
+        const avail=idx===0?fullW-indentPx:fullW;
+        const gap=avail-usedW;
+        if(gap<=0) return;
+        if(usedW<avail*0.4) return;
+        const per=Math.min(gap/(line.length-1),maxPer);
+        line.forEach((s,i)=>{ if(i<line.length-1) s.style.marginRight=per.toFixed(2)+'px'; });
+    });
+    return original;
+}
+function restoreAfterExport(container,html){ container.innerHTML=html; container.contentEditable='true'; }
+
+async function capturePosterCanvas(scale){
+    const prev=poster.style.transform, prevWrapH=wrap.style.height;
+    poster.style.transform='scale(1)'; wrap.style.height=posterH+'px';
+    if(document.activeElement===detail) detail.blur();
+    const savedDetailHTML=justifyForExport(detail);
+    try{
+        const c=await html2canvas(poster,{scale,useCORS:true,allowTaint:true,width:BASE_W,height:posterH});
+        return c;
+    } finally {
+        poster.style.transform=prev; wrap.style.height=prevWrapH;
+        restoreAfterExport(detail,savedDetailHTML);
+    }
+}
+
+$('downloadBtn').addEventListener('click',async function(){
     if(images.length<4&&!confirm('ยังมีรูปไม่ครบ 4 รูป ต้องการดาวน์โหลดต่อไหมครับ?')) return;
     fitHeadline(); fitText();
-    const prev=poster.style.transform;
-    poster.style.transform='scale(1)';
+    if(document.activeElement===detail) detail.blur();
     const origText=this.innerText, btn=this;
     this.innerText='⏳ กำลังสร้างรูปภาพ...'; this.disabled=true;
-    html2canvas(poster,{scale:2,useCORS:true,allowTaint:true,width:BASE_W,height:posterH})
-        .then(c=>new Promise(res=>c.toBlob(res,'image/png')))
-        .then(blob=>offerDownload(`ข่าวประชาสัมพันธ์_${Date.now()}.png`,blob,btn,'📥 PNG'))
-        .catch(()=>alert('เกิดข้อผิดพลาดในการสร้างไฟล์รูปภาพ'))
-        .finally(()=>{ poster.style.transform=prev; this.disabled=false; });
+    try{
+        const c=await capturePosterCanvas(2);
+        const blob=await new Promise(res=>c.toBlob(res,'image/png'));
+        await offerDownload(`ข่าวประชาสัมพันธ์_${Date.now()}.png`,blob,btn,'📥 PNG');
+    }catch(e){
+        alert('เกิดข้อผิดพลาดในการสร้างไฟล์รูปภาพ');
+    }finally{
+        this.disabled=false;
+    }
 });
 
-$('downloadPdfBtn').addEventListener('click',function(){
+$('downloadPdfBtn').addEventListener('click',async function(){
     if(images.length<4&&!confirm('ยังมีรูปไม่ครบ 4 รูป ต้องการดาวน์โหลดต่อไหมครับ?')) return;
     fitHeadline(); fitText();
-    const prev=poster.style.transform;
-    poster.style.transform='scale(1)';
+    if(document.activeElement===detail) detail.blur();
     const origText=this.innerText, btn=this;
     this.innerText='⏳ กำลังสร้างไฟล์...'; this.disabled=true;
-    html2canvas(poster,{scale:2,useCORS:true,allowTaint:true,width:BASE_W,height:posterH})
-        .then(c=>{
-            const { jsPDF }=window.jspdf;
-            const imgData=c.toDataURL('image/png');
-            const wMm=BASE_W/MM, hMm=posterH/MM;
-            const pdf=new jsPDF({ orientation: wMm>hMm?'l':'p', unit:'mm', format:[wMm,hMm] });
-            pdf.addImage(imgData,'PNG',0,0,wMm,hMm,'','FAST');
-            const blob=pdf.output('blob');
-            return offerDownload(`ข่าวประชาสัมพันธ์_${Date.now()}.pdf`,blob,btn,origText);
-        })
-        .catch(()=>alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF'))
-        .finally(()=>{ poster.style.transform=prev; this.disabled=false; });
+    try{
+        const c=await capturePosterCanvas(2);
+        const { jsPDF }=window.jspdf;
+        const imgData=c.toDataURL('image/png');
+        const wMm=BASE_W/MM, hMm=posterH/MM;
+        const pdf=new jsPDF({ orientation: wMm>hMm?'l':'p', unit:'mm', format:[wMm,hMm] });
+        pdf.addImage(imgData,'PNG',0,0,wMm,hMm,'','FAST');
+        const blob=pdf.output('blob');
+        await offerDownload(`ข่าวประชาสัมพันธ์_${Date.now()}.pdf`,blob,btn,origText);
+    }catch(e){
+        alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
+    }finally{
+        this.disabled=false;
+    }
+
 });
 
 /* init */
