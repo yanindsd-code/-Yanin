@@ -40,9 +40,9 @@ h2 { font-weight:700; }
     border-radius:3px; padding:8px 14px; box-shadow:0 2px 6px rgba(0,0,0,.12); }
 .hl-boxed h1{ color:#111827; }
 
-.news-detail-text{ line-height:1.5; min-height:0; text-justify:inter-character; white-space:pre-wrap; text-indent:2em; }
+.news-detail-text{ line-height:1.5; min-height:0; text-justify:inter-character; white-space:pre-wrap; text-indent:2em; letter-spacing:0.01px; }
 .headline h1{ overflow-wrap:break-word; word-break:break-word; }
-.news-reporter-text{ font-size:10pt !important; font-style:italic; padding-right:var(--side-pad); }
+.news-reporter-text{ font-size:10pt !important; font-style:italic; padding-right:var(--side-pad); letter-spacing:0.01px; }
 
 .img-grid{ display:grid; gap:0; width:100%; }
 .img-grid > *{ width:100%; height:100%; overflow:hidden; }
@@ -296,11 +296,13 @@ $('clearTplBtn').addEventListener('click',()=>{
 const ROW_LAYOUTS={1:[1],2:[2],3:[3],4:[2,2],5:[2,3],6:[3,3],7:[3,2,2],8:[3,3,2],9:[3,3,3]};
 const imgDims=new Map();
 function renderGrid(){
-    const n=images.length, h=grid.style.height;
+    const n=images.length;
+    const maxH=posterH*$('gridH').value/100; // ความสูงสูงสุดตามสไลเดอร์ "ความสูงตารางรูป"
     grid.innerHTML='';
     if(n===0){
         grid.className=`img-grid grid-4 overflow-hidden shrink-0 bg-gray-200`;
-        grid.style.height=h;
+        grid.style.display=''; grid.style.flexDirection=''; grid.style.alignItems='';
+        grid.style.height=maxH+'px';
         for(let i=1;i<=4;i++){
             const d=document.createElement('div');
             d.className=(i%3===0?'bg-gray-200':'bg-gray-300')+' flex items-center justify-center text-gray-500';
@@ -308,26 +310,42 @@ function renderGrid(){
         }
         return;
     }
-    grid.className='img-grid overflow-hidden shrink-0 bg-gray-200';
-    grid.style.cssText+=';display:flex;flex-direction:column;';
-    grid.style.height=h;
+    /* จัดแบบ "ไม่ครอปรูป": ทุกช่องมีสัดส่วนเท่ากับรูปจริง
+       - แต่ละแถวสูง = ความกว้าง / ผลรวมสัดส่วน(กว้าง/สูง) ของรูปในแถว
+       - ถ้ารวมทุกแถวแล้วสูงเกินสไลเดอร์ ย่อทั้งชุดลงตามสัดส่วนและจัดกึ่งกลาง
+       - ถ้าเตี้ยกว่าสไลเดอร์ ตารางจะเตี้ยลงเอง และข้อความด้านล่างเลื่อนขึ้นมา */
+    grid.className='img-grid overflow-hidden shrink-0';
+    grid.style.display='flex'; grid.style.flexDirection='column'; grid.style.alignItems='center';
+    const W=grid.clientWidth||(BASE_W-2*($('sidePad').value*MM));
     const rows=ROW_LAYOUTS[Math.min(n,9)]||[n];
     let idx=0;
-    rows.forEach(count=>{
-        const rowEl=document.createElement('div');
-        rowEl.style.cssText='display:flex;flex:1 1 0;min-height:0;overflow:hidden;';
+    const rowData=rows.map(count=>{
+        const items=[];
         for(let k=0;k<count&&idx<n;k++,idx++){
-            const src=images[idx];
-            const dims=imgDims.get(src);
-            const cell=document.createElement('div');
-            cell.style.cssText=`overflow:hidden;height:100%;flex:${dims?dims.w/dims.h:1} 1 0;background-image:url("${src}");background-size:cover;background-position:center;`;
-            rowEl.appendChild(cell);
-            if(!dims){
+            const src=images[idx], d=imgDims.get(src);
+            items.push({src,ar:d?d.w/d.h:1.5});
+            if(!d){
                 const probe=new Image();
                 probe.onload=()=>{ imgDims.set(src,{w:probe.naturalWidth,h:probe.naturalHeight}); renderGrid(); };
                 probe.src=src;
             }
         }
+        return items;
+    }).filter(r=>r.length);
+    const natH=rowData.reduce((sum,r)=>sum+W/r.reduce((a,it)=>a+it.ar,0),0);
+    const k=natH>maxH?maxH/natH:1;
+    const usedW=W*k;
+    grid.style.height=(natH*k)+'px';
+    rowData.forEach(items=>{
+        const sumAr=items.reduce((a,it)=>a+it.ar,0);
+        const rowH=usedW/sumAr;
+        const rowEl=document.createElement('div');
+        rowEl.style.cssText=`display:flex;flex:none;width:${usedW}px;height:${rowH}px;overflow:hidden;`;
+        items.forEach(it=>{
+            const cell=document.createElement('div');
+            cell.style.cssText=`flex:none;width:${rowH*it.ar}px;height:100%;background-image:url("${it.src}");background-size:100% 100%;background-position:center;`;
+            rowEl.appendChild(cell);
+        });
         grid.appendChild(rowEl);
     });
 }
@@ -396,7 +414,7 @@ function applyLayout(){
     hlText.style.color=$('hlFontColor').value;
     content.style.paddingTop=(posterH*$('topPad').value/100)+'px';
     content.style.paddingBottom=(posterH*$('botPad').value/100)+'px';
-    grid.style.height=(posterH*$('gridH').value/100)+'px';
+    renderGrid();
     hlBox.style.height=(posterH*$('hlH').value/100)+'px';
     hlBox.className='headline '+$('hlStyle').value+' shrink-0';
     $('sideVal').textContent=parseFloat($('sidePad').value).toFixed(1)+' mm';
@@ -513,61 +531,17 @@ async function offerDownload(filename,blob,btn,origLabel){
     }
 }
 
-/* ===== จัดกระจายตัวอักษรแบบไทย เฉพาะตอนบันทึกไฟล์ (html2canvas ไม่รองรับ text-justify)
-   มีเพดานระยะห่างและข้ามบรรทัดสั้นผิดปกติ กันปัญหาช่องว่างเว่อร์ ===== */
-function graphemes(text){
-    if(typeof Intl!=='undefined'&&Intl.Segmenter){
-        const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
-        return Array.from(seg.segment(text),s=>s.segment);
-    }
-    return Array.from(text);
-}
-function justifyForExport(container){
-    const original=container.innerHTML;
-    const chars=graphemes(container.textContent);
-    container.contentEditable='false';
-    container.innerHTML='';
-    const frag=document.createDocumentFragment();
-    const spans=chars.map(ch=>{ const s=document.createElement('span'); s.textContent=ch; frag.appendChild(s); return s; });
-    container.appendChild(frag);
-    const lines=[]; let curTop=null, curLine=[];
-    spans.forEach(s=>{
-        const top=Math.round(s.offsetTop);
-        if(curTop===null||Math.abs(top-curTop)<1){ curLine.push(s); curTop=top; }
-        else { lines.push(curLine); curLine=[s]; curTop=top; }
-    });
-    if(curLine.length) lines.push(curLine);
-    const indentPx=parseFloat(getComputedStyle(container).textIndent)||0;
-    const fullW=container.clientWidth;
-    const fontPx=parseFloat(getComputedStyle(container).fontSize)||16;
-    const maxPer=fontPx*0.5;
-    lines.forEach((line,idx)=>{
-        const endsParagraph=line.some(s=>s.textContent==='\n'); // บรรทัดที่จบด้วยการเว้นบรรทัดเอง (ขึ้นย่อหน้าใหม่) ไม่ต้องกระจาย
-        if(idx===lines.length-1||endsParagraph||line.length<2) return;
-        const first=line[0], last=line[line.length-1];
-        const usedW=(last.offsetLeft+last.offsetWidth)-first.offsetLeft;
-        const avail=idx===0?fullW-indentPx:fullW;
-        const gap=avail-usedW;
-        if(gap<=0) return;
-        if(usedW<avail*0.4) return;
-        const per=Math.min(gap/(line.length-1),maxPer);
-        line.forEach((s,i)=>{ if(i<line.length-1) s.style.marginRight=per.toFixed(2)+'px'; });
-    });
-    return original;
-}
-function restoreAfterExport(container,html){ container.innerHTML=html; container.contentEditable='true'; }
-
+/* ===== บันทึกไฟล์: ถ่ายภาพจากหน้าจอ Preview ตรงๆ ไม่จัดข้อความใหม่
+   (letter-spacing 0.01px ทำให้ html2canvas วาดทุกตัวอักษรตามตำแหน่งจริงบนจอ Preview จึงตรงกัน) ===== */
 async function capturePosterCanvas(scale){
     const prev=poster.style.transform, prevWrapH=wrap.style.height;
     poster.style.transform='scale(1)'; wrap.style.height=posterH+'px';
     if(document.activeElement===detail) detail.blur();
-    const savedDetailHTML=justifyForExport(detail);
     try{
         const c=await html2canvas(poster,{scale,useCORS:true,allowTaint:true,width:BASE_W,height:posterH});
         return c;
     } finally {
         poster.style.transform=prev; wrap.style.height=prevWrapH;
-        restoreAfterExport(detail,savedDetailHTML);
     }
 }
 
