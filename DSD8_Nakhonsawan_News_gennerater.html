@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#5a1e6b">
+  <title>DSD8 นครสวรรค์ · ระบบสร้างข่าวประชาสัมพันธ์ A4</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+    body {
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, Arial, sans-serif;
+      background: #f3ebff;
+      color: #2d1b3a;
+      display: flex;
+      flex-direction: row;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .sidebar {
+      width: 440px; min-width: 360px;
+      background: #ffffff; color: #2d1b3a;
+      padding: 24px 18px 30px;
+      height: 100vh; overflow-y: auto;
+      position: sticky; top: 0;
+      box-shadow: 6px 0 25px rgba(123, 45, 142, 0.12);
+      z-index: 100;
+      border-right: 2px solid #e3d0f0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar h1 {
+      font-size: 1.35rem; color: #5a1e6b;
+      text-align: center; margin-bottom: 28px;
+      padding-bottom: 14px; border-bottom: 3px solid #c9a84c;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .sidebar h1 i { color: #b8860b; }
+
+    .section-title {
+      font-size: 1rem; color: #5a1e6b;
+      margin: 26px 0 12px; padding-left: 12px;
+      border-left: 6px solid #c9a84c; font-weight: 700;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 0.85rem;
+      color: #3a2a44; margin-bottom: 6px; font-weight: 600;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="file"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%; padding: 10px 14px;
+      border-radius: 10px; border: 1.5px solid #d9c4e6;
+      background: #fcf9ff; color: #1f1129;
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-size: 0.95rem;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #b8860b; outline: none;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+    }
+    .form-group textarea {
+      resize: vertical; min-height: 110px;
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-size: 1rem; line-height: 1.5;
+    }
+    .form-group input[type="range"] {
+      width: 100%; accent-color: #b8860b;
+      margin-top: 6px; height: 28px;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 12px 18px;
+      border: none; border-radius: 12px;
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.18s ease;
+      width: 100%; margin-top: 6px; text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      min-height: 44px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: #7b2d8e; color: #ffffff; border: 1px solid #9b4dae; }
+    .btn-primary:hover { background: #8e3da5; }
+    .btn-gold { background: #c9a84c; color: #2d1b3a; border: 1px solid #e0c060; }
+    .btn-gold:hover { background: #dbb85c; }
+    .btn-danger { background: #b33b3b; color: #fff; border: 1px solid #d05a5a; }
+    .btn-danger:hover { background: #c44a4a; }
+    .btn-outline { background: #ffffff; color: #5a1e6b; border: 1.5px solid #c9a84c; }
+    .btn-outline:hover { background: #faf3e0; }
+    .btn-sm { padding: 8px 12px; font-size: 0.82rem; width: auto; margin-top: 4px; min-height: 36px; }
+
+    .format-toolbar {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 8px; padding: 8px 10px;
+      background: #f9f5ff; border-radius: 12px;
+      border: 1px solid #e3d0f0; align-items: center;
+    }
+    .format-btn {
+      flex: 0 0 auto; min-width: 44px; height: 44px;
+      padding: 0 10px; border-radius: 10px;
+      background: #ffffff; color: #5a1e6b;
+      border: 1.5px solid #d9c4e6;
+      cursor: pointer; font-size: 0.95rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .format-btn:hover { background: #f3eaff; border-color: #b8860b; }
+    .format-btn.active { background: #c9a84c; color: #2d1b3a; border-color: #c9a84c; }
+
+    .style-presets {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 8px; margin-top: 8px;
+    }
+    .style-preset-btn {
+      padding: 12px 12px; border-radius: 12px;
+      border: 1.5px solid #d9c4e6; background: #ffffff;
+      color: #2d1b3a;
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      text-align: left; min-height: 44px;
+    }
+    .style-preset-btn:hover { border-color: #b8860b; background: #faf3e0; }
+    .style-preset-btn.active { border-color: #c9a84c; background: #f5edda; color: #5a1e6b; }
+
+    .color-row {
+      display: flex; gap: 10px; align-items: center;
+      margin-top: 8px; padding: 8px 10px;
+      background: #f9f5ff; border-radius: 12px;
+      border: 1px solid #e3d0f0;
+    }
+    .color-row label {
+      font-size: 0.82rem; color: #3a2a44;
+      margin: 0; font-weight: 600;
+    }
+    .color-row input[type="color"] {
+      width: 52px; height: 44px;
+      border: 2px solid #c9a84c; border-radius: 10px;
+      background: transparent; padding: 2px; cursor: pointer;
+    }
+    .color-row .btn { flex: 1; margin: 0; padding: 10px; font-size: 0.82rem; width: auto; min-height: 44px; }
+
+    .color-presets {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+    }
+    .color-swatch {
+      width: 40px; height: 40px; border-radius: 8px;
+      border: 2px solid #c9a84c; cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .color-swatch:hover, .color-swatch:active { transform: scale(1.12); }
+
+    .img-slot-group {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 14px; background: #f9f5ff;
+      border-radius: 14px; padding: 14px;
+      border: 1px solid #e3d0f0;
+    }
+    .img-slot-header { display: flex; align-items: center; justify-content: space-between; }
+    .img-slot-label { font-size: 0.88rem; color: #5a1e6b; font-weight: 700; }
+
+    .img-thumb {
+      width: 100%; height: 80px; border-radius: 10px;
+      background: #ffffff; border: 1.5px dashed #c9a84c;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; font-size: 0.78rem; color: #8a7a9a;
+      cursor: pointer; background-size: cover; background-position: center;
+    }
+    .img-slot-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .img-slot-actions .btn { flex: 1; font-size: 0.78rem; padding: 8px; min-width: 60px; min-height: 40px; }
+
+    .mobile-toggle {
+      display: none; position: fixed;
+      bottom: 20px; right: 20px; z-index: 200;
+      background: #c9a84c; color: #2d1b3a;
+      border: none; border-radius: 50px;
+      padding: 16px 24px; font-size: 1rem; font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.3);
+      cursor: pointer;
+      font-family: 'TH Sarabun New', 'Sarabun', sans-serif;
+      align-items: center; gap: 10px; min-height: 56px;
+    }
+
+    .preview-area {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; padding: 28px 20px;
+      background: #ede4f7; min-height: 100vh;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .preview-toolbar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 20px;
+      width: 100%; max-width: 210mm;
+    }
+    .preview-toolbar .btn { width: auto; flex: 0 1 auto; padding: 12px 18px; font-size: 0.95rem; min-height: 44px; }
+
+    .a4-container {
+      width: 210mm; aspect-ratio: 210 / 297;
+      background: #fff; position: relative;
+      box-shadow: 0 16px 48px rgba(90, 30, 107, 0.18);
+      border-radius: 8px; overflow: hidden;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+      background-size: cover; background-position: center;
+      background-repeat: no-repeat;
+      border: 1px solid #e3d0f0;
+      background-image: linear-gradient(135deg, #faf5ff 0%, #f0e6fa 25%, #fdf8e8 50%, #f5edda 75%, #faf5ff 100%);
+    }
+    .a4-overlay {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(45, 27, 58, 0.01);
+      pointer-events: none; z-index: 1;
+    }
+    .a4-content {
+      position: relative; z-index: 2;
+      padding: var(--title-padding, 40mm) 10mm 15mm 10mm;
+      display: flex; flex-direction: column;
+      width: 100%; height: 100%; gap: 4mm;
+      box-sizing: border-box;
+    }
+    .a4-content > * { flex-shrink: 0; }
+
+    /* ===== NEWS TITLE ===== */
+    .news-title-box {
+      position: relative;
+      background: linear-gradient(135deg, #7b2d8e 0%, #b04cb8 25%, #5a1e6b 50%, #7b2d8e 75%, #3b1e4f 100%);
+      border: 2.5px solid #c9a84c;
+      border-radius: 10px;
+      padding: 10px 24px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(123,45,142,0.25);
+      flex-shrink: 0; overflow: hidden;
+    }
+    .news-title-box::before,
+    .news-title-box::after {
+      content: ""; position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 18px; height: 80%;
+      background: linear-gradient(135deg, #c9a84c, #a88a2e);
+      border: 1.5px solid #f5d76e; z-index: -1;
+    }
+    .news-title-box::before { left: -12px; clip-path: polygon(0 0, 100% 15%, 100% 85%, 0 100%, 30% 50%); }
+    .news-title-box::after { right: -12px; clip-path: polygon(0 15%, 100% 0, 70% 50%, 100% 100%, 0 85%); }
+
+    .news-title-text {
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-size: 1.35rem; font-weight: 800;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      margin: 0; letter-spacing: 0.8px;
+      outline: none; min-height: 1.4em;
+      word-break: break-word;
+      position: relative; display: block;
+      padding-bottom: 6px; text-align: center; width: 100%;
+    }
+    .news-title-text::after {
+      content: ""; position: absolute;
+      bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 70%; height: 2.5px;
+      background: linear-gradient(90deg, transparent, #f5d76e 20%, #f5d76e 80%, transparent);
+      border-radius: 2px;
+    }
+    .news-title-text[data-align="left"]::after { left: 0; transform: translateX(0); width: 50%; }
+    .news-title-text[data-align="right"]::after { left: auto; right: 0; transform: translateX(0); width: 50%; }
+    .news-title-text[data-align="justify"]::after { left: 0; transform: translateX(0); width: 100%; }
+    .news-title-text:empty::before {
+      content: "หัวข้อข่าว / ชื่อกิจกรรม";
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ===== IMAGES ===== */
+    .row-main-images {
+      display: flex; gap: 3mm;
+      flex-shrink: 0; width: 100%;
+    }
+    .main-image-box {
+      flex: 1; height: 58mm;
+      border: 2.5px solid #c9a84c;
+      border-radius: 10px; overflow: hidden;
+      background: #faf5ff;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      min-width: 0;
+    }
+    .main-image-box:hover { border-color: #b8860b; }
+    .main-image-box .image-bg {
+      width: 100%; height: 100%;
+      background-size: cover; background-position: center center;
+      background-repeat: no-repeat; display: block;
+    }
+    .main-image-box .placeholder-text {
+      color: #7b2d8e; font-size: 0.85rem; font-weight: 600;
+      text-align: center; padding: 10px; pointer-events: none;
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 100%;
+    }
+
+    .row-3 {
+      display: flex; gap: 3mm;
+      flex-shrink: 0; width: 100%;
+    }
+    .img-box {
+      flex: 1; height: 42mm;
+      border: 2.5px solid #c9a84c;
+      border-radius: 10px; overflow: hidden;
+      background: #faf5ff;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      min-width: 0;
+    }
+    .img-box:hover { border-color: #b8860b; }
+    .img-box .image-bg {
+      width: 100%; height: 100%;
+      background-size: cover; background-position: center center;
+      background-repeat: no-repeat; display: block;
+    }
+    .img-box .placeholder-text {
+      color: #7b2d8e; font-size: 0.72rem; font-weight: 600;
+      text-align: center; padding: 8px; pointer-events: none;
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 100%;
+    }
+
+    /* ===== CONTENT ===== */
+    .row-content {
+      display: flex; flex: 0 0 auto; width: 100%;
+    }
+    .news-content-box {
+      flex: 1; max-height: 85mm; min-height: 40mm;
+      border: 2.5px solid #c9a84c;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.98);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    /* ✅ กล่องชื่อสถาบัน - บรรทัดเดียว เรียบหรู */
+    .news-content-org {
+      position: relative;
+      background: linear-gradient(135deg, #5a1e6b 0%, #7b2d8e 50%, #5a1e6b 100%);
+      padding: 10px 20px;
+      text-align: center;
+      border-top: 3px solid #f5d76e;
+      border-bottom: 3px solid #f5d76e;
+      flex-shrink: 0;
+      overflow: hidden;
+      min-height: 16mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ✅ เส้นไฟทองล่าง */
+    .news-content-org::before {
+      content: "";
+      position: absolute;
+      bottom: 3px; left: 15%; right: 15%;
+      height: 3px;
+      background: linear-gradient(90deg,
+        transparent 0%, #f5d76e 20%, #ffcc33 50%, #f5d76e 80%, transparent 100%);
+      border-radius: 50%;
+      filter: blur(0.5px);
+      box-shadow: 0 0 12px rgba(255, 204, 51, 0.9);
+      animation: fireGlow 3s ease-in-out infinite alternate;
+    }
+    /* ✅ เส้นไฟทองบน */
+    .news-content-org::after {
+      content: "";
+      position: absolute;
+      top: 3px; left: 20%; right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%, #f5d76e 30%, #ffcc33 50%, #f5d76e 70%, transparent 100%);
+      border-radius: 50%;
+      filter: blur(0.3px);
+    }
+    @keyframes fireGlow {
+      0% { opacity: 0.7; filter: blur(0.5px) brightness(1); }
+      100% { opacity: 1; filter: blur(0.8px) brightness(1.4); }
+    }
+
+    /* ✅ ชื่อสถาบัน บรรทัดเดียว */
+    .org-name-line {
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #f5d76e;
+      letter-spacing: 1.5px;
+      line-height: 1.3;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4), 0 0 12px rgba(245, 215, 110, 0.6);
+      position: relative;
+      z-index: 2;
+      outline: none;
+      word-break: break-word;
+      max-width: 100%;
+      padding: 2px 8px;
+    }
+
+    .news-content-text {
+      font-family: 'TH Sarabun New', 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif;
+      font-size: 0.95rem; line-height: 1.6;
+      color: #2d1b3a; white-space: pre-wrap;
+      word-break: break-word; outline: none;
+      flex: 1; overflow-y: auto;
+      padding: 12px 14px; min-height: 0;
+      text-align: left; -webkit-overflow-scrolling: touch;
+    }
+    .news-content-text.style-official {
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-weight: 400; letter-spacing: 0.2px; line-height: 1.7;
+    }
+    .news-content-text.style-official-bold {
+      font-family: 'TH Sarabun New', 'Sarabun', Tahoma, sans-serif;
+      font-weight: 700; letter-spacing: 0.2px; line-height: 1.7;
+    }
+    .news-content-text.style-classic { font-family: 'TH Sarabun New', 'Sarabun', serif; font-weight: 400; }
+    .news-content-text.style-modern { font-family: 'Sarabun', Tahoma, sans-serif; font-weight: 600; }
+
+    .default-bg-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .default-bg-buttons .btn {
+      margin: 0;
+      font-size: 0.85rem;
+      padding: 10px 8px;
+    }
+
+    .default-bg-status {
+      background: #e8f5e8;
+      border: 1.5px dashed #4a8a4a;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: #2d6a2d;
+      line-height: 1.5;
+    }
+    .default-bg-status strong { color: #1a4a1a; }
+    .default-bg-status .status-icon {
+      color: #4a8a4a;
+      margin-right: 4px;
+    }
+
+    .padding-value {
+      display: inline-block;
+      background: #5a1e6b; color: #f5d76e;
+      padding: 2px 10px; border-radius: 12px;
+      font-size: 0.85rem; font-weight: 700;
+      margin-left: 6px;
+    }
+
+    /* PRINT */
+    @media print {
+      html, body {
+        background: #fff !important;
+        display: block !important;
+        margin: 0 !important; padding: 0 !important;
+        width: 210mm !important; height: 297mm !important;
+      }
+      .sidebar, .mobile-toggle, .preview-toolbar, .preview-modal,
+      .overflow-warning, .toast { display: none !important; }
+      .preview-area {
+        padding: 0 !important; background: #fff !important;
+        min-height: auto !important; display: block !important;
+        width: 210mm !important;
+      }
+      .a4-container {
+        box-shadow: none !important; border-radius: 0 !important;
+        width: 210mm !important; height: 297mm !important;
+        margin: 0 !important; transform: none !important;
+        border: none !important; aspect-ratio: auto !important;
+      }
+      @page { size: A4 portrait; margin: 0; }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .news-content-org::before { animation: none !important; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      body { flex-direction: column; }
+      .sidebar {
+        width: 100%; min-width: unset; height: auto;
+        max-height: 50vh; position: relative;
+        border-right: none; border-bottom: 3px solid #c9a84c;
+        padding: 18px;
+      }
+      .preview-area { padding: 20px 12px; min-height: auto; }
+      .a4-container { width: 100%; max-width: 700px; aspect-ratio: 210/297; }
+      .a4-content { padding: var(--title-padding, 20mm) 6mm 12mm 6mm !important; gap: 4mm; }
+      .news-title-text { font-size: 1.15rem; }
+      .main-image-box { height: 48mm; }
+      .img-box { height: 36mm; }
+      .news-content-org { padding: 8px 16px; min-height: 14mm; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { max-height: 60vh; padding: 14px; }
+      .sidebar h1 { font-size: 1.15rem; margin-bottom: 20px; }
+      .section-title { font-size: 0.95rem; margin: 20px 0 10px; }
+      .form-group { margin-bottom: 14px; }
+      .form-group label { font-size: 0.85rem; }
+      .form-group input,
+      .form-group textarea,
+      .form-group select { font-size: 16px; padding: 12px 14px; }
+      .btn { font-size: 0.95rem; padding: 12px 16px; min-height: 48px; }
+      .format-btn { min-width: 48px; height: 48px; }
+      .color-swatch { width: 42px; height: 42px; }
+
+      .a4-container { max-width: 100%; }
+      .a4-content { padding: var(--title-padding, 12mm) 4mm 8mm 4mm !important; gap: 3mm; }
+      .news-title-text { font-size: 0.95rem; padding: 6px 12px; }
+      .news-content-text { font-size: 0.8rem; }
+      .main-image-box { height: 40mm; }
+      .img-box { height: 32mm; }
+      .news-content-box { max-height: 70mm; }
+
+      .news-content-org { padding: 8px 14px; min-height: 12mm; }
+
+      .mobile-toggle { display: flex !important; }
+      .sidebar {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100vh; max-height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        border-right: none; border-bottom: none;
+        z-index: 150; padding-top: 60px; padding-bottom: 100px;
+        background: #ffffff;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .preview-area { padding: 14px 8px; }
+      .preview-toolbar { gap: 6px; margin-bottom: 14px; }
+      .preview-toolbar .btn { padding: 10px 14px; font-size: 0.88rem; min-height: 44px; }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar { padding: 12px; }
+      .a4-content { padding: var(--title-padding, 8mm) 3mm 6mm 3mm !important; gap: 2.5mm; }
+      .news-title-text { font-size: 0.85rem; padding: 5px 10px; }
+      .news-content-text { font-size: 0.75rem; }
+      .main-image-box { height: 34mm; }
+      .img-box { height: 27mm; }
+
+      .news-content-org { padding: 6px 12px; min-height: 10mm; }
+
+      .preview-toolbar .btn { padding: 8px 12px; font-size: 0.82rem; }
+      .mobile-toggle { padding: 14px 20px; font-size: 0.95rem; }
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f0e6fa; }
+    ::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 10px; }
+
+    input[type="file"] { padding: 8px; font-size: 0.9rem; color: #2d1b3a; background: #fcf9ff; }
+    input[type="file"]::file-selector-button {
+      background: #c9a84c; color: #2d1b3a;
+      border: none; border-radius: 8px;
+      padding: 10px 16px; font-weight: 700;
+      cursor: pointer; margin-right: 12px;
+      font-size: 0.9rem; min-height: 40px;
+      font-family: 'TH Sarabun New', 'Sarabun', sans-serif;
+    }
+
+    .toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: #5a1e6b; color: #f5d76e;
+      border: 1px solid #c9a84c; border-radius: 40px;
+      padding: 14px 24px; font-weight: 700; font-size: 0.95rem;
+      box-shadow: 0 8px 30px rgba(90, 30, 107, 0.4);
+      z-index: 999; transition: opacity 0.3s, transform 0.3s;
+      opacity: 0; pointer-events: none;
+      max-width: 90vw; text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+
+    .overflow-warning {
+      color: #b33b3b; font-size: 0.85rem; font-weight: 700;
+      margin-top: 10px; display: none;
+      background: #ffe3e3; padding: 10px 16px;
+      border-radius: 30px; border: 1px solid #ffb3b3;
+    }
+    .overflow-warning.show { display: block; }
+
+    /* MODALS */
+    .crop-modal, .preview-modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(30, 15, 40, 0.9);
+      z-index: 500; display: none;
+      align-items: center; justify-content: center; padding: 16px;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .crop-modal.open, .preview-modal.open { display: flex; }
+    .preview-modal { flex-direction: column; z-index: 600; }
+
+    .crop-modal .crop-container {
+      background: #ffffff; border: 2px solid #c9a84c;
+      border-radius: 20px; padding: 20px;
+      max-width: 96vw; max-height: 94vh; overflow: auto;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.3); width: 100%;
+    }
+    .crop-modal img#cropImage {
+      max-width: 100%; max-height: 45vh;
+      border: 2px solid #c9a84c; border-radius: 12px;
+      object-fit: contain; background: #f9f5ff;
+    }
+    .crop-modal .crop-controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .crop-modal .crop-controls .btn { width: auto; padding: 12px 20px; flex: 1; min-width: 100px; min-height: 48px; }
+    .crop-modal h3 { color: #5a1e6b; font-size: 1.15rem; text-align: center; }
+    .crop-modal label { font-size: 0.9rem; color: #5a1e6b; font-weight: 600; display: block; margin-bottom: 4px; }
+
+    .preview-modal-header {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center; align-items: center;
+      margin-bottom: 16px; width: 100%; max-width: 210mm;
+      background: #ffffff; border: 2px solid #c9a84c;
+      border-radius: 20px; padding: 12px 16px;
+    }
+    .preview-modal-header h2 {
+      color: #5a1e6b; font-size: 1.1rem;
+      margin: 0; flex: 1; text-align: center; font-weight: 700;
+    }
+    .preview-modal-header .btn { width: auto; margin: 0; padding: 10px 16px; font-size: 0.88rem; min-height: 44px; }
+    .preview-modal-body { display: flex; justify-content: center; align-items: flex-start; width: 100%; padding-bottom: 40px; }
+    .preview-modal .a4-container { border: 2px solid #c9a84c; transform: scale(0.9); transform-origin: top center; background: #fff; }
+
+    @media (max-width: 900px) { .preview-modal .a4-container { transform: scale(0.7); } }
+    @media (max-width: 600px) { .preview-modal .a4-container { transform: scale(0.5); } }
+    @media (max-width: 400px) { .preview-modal .a4-container { transform: scale(0.4); } }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <h1><i class="fas fa-pen-fancy"></i> DSD8 · ระบบข่าว</h1>
+
+    <div class="section-title">🏛️ ข้อมูลสถาบัน (หัวข้อบนกล่องข่าว)</div>
+
+    <div class="form-group">
+      <label for="orgNameInput">ชื่อสถาบัน</label>
+      <input type="text" id="orgNameInput" value="สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์" placeholder="สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์">
+    </div>
+
+    <div class="form-group">
+      <label for="orgFontSizeSelect">🔠 ขนาดตัวอักษร</label>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button class="format-btn" onclick="changeOrgFontSize(-1)" style="min-width: 48px; height: 48px;">−</button>
+        <select id="orgFontSizeSelect" onchange="applyOrgFontSize()" style="flex: 1;">
+          <option value="0.95">เล็กมาก (0.95)</option>
+          <option value="1.15">เล็ก (1.15)</option>
+          <option value="1.3">ค่อนข้างเล็ก (1.3)</option>
+          <option value="1.45" selected>ปกติ (1.45)</option>
+          <option value="1.65">ใหญ่ (1.65)</option>
+          <option value="1.85">ใหญ่พิเศษ (1.85)</option>
+          <option value="2.1">ใหญ่มาก (2.1)</option>
+        </select>
+        <button class="format-btn" onclick="changeOrgFontSize(1)" style="min-width: 48px; height: 48px;">+</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>🎨 สีตัวอักษร</label>
+      <div class="color-row">
+        <input type="color" id="orgColor" value="#f5d76e" onchange="applyOrgColor()">
+        <button class="btn btn-outline" onclick="resetOrgColor()">↩️ สีทอง</button>
+      </div>
+      <div class="color-presets">
+        <div class="color-swatch" style="background:#f5d76e;" onclick="setOrgColor('#f5d76e')" title="ทอง"></div>
+        <div class="color-swatch" style="background:#ffcc33;" onclick="setOrgColor('#ffcc33')" title="ทองสว่าง"></div>
+        <div class="color-swatch" style="background:#ffe9a8;" onclick="setOrgColor('#ffe9a8')" title="ทองอ่อน"></div>
+        <div class="color-swatch" style="background:#ffffff;" onclick="setOrgColor('#ffffff')" title="ขาว"></div>
+        <div class="color-swatch" style="background:#ff6b6b;" onclick="setOrgColor('#ff6b6b')" title="แดง"></div>
+        <div class="color-swatch" style="background:#4ecdc4;" onclick="setOrgColor('#4ecdc4')" title="เขียวน้ำทะเล"></div>
+        <div class="color-swatch" style="background:#2d1b3a;" onclick="setOrgColor('#2d1b3a')" title="ม่วงเข้ม"></div>
+        <div class="color-swatch" style="background:#000000;" onclick="setOrgColor('#000000')" title="ดำ"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="orgFontFamily">🔤 ฟอนต์</label>
+      <select id="orgFontFamily" onchange="applyOrgFont()">
+        <option value="'TH Sarabun New', 'Sarabun', Tahoma, sans-serif">TH Sarabun New (ราชการ)</option>
+        <option value="'Sarabun', Tahoma, sans-serif">Sarabun (โมเดิร์น)</option>
+        <option value="'Prompt', Tahoma, sans-serif">Prompt (ทันสมัย)</option>
+        <option value="Tahoma, sans-serif">Tahoma (อ่านง่าย)</option>
+        <option value="'Times New Roman', serif">Times New Roman (คลาสสิก)</option>
+        <option value="'Courier New', monospace">Courier New (พิมพ์ดีด)</option>
+      </select>
+    </div>
+
+    <div class="section-title">A. ข้อมูลหัวข้อ</div>
+
+    <div class="form-group">
+      <label for="newsTitle">หัวข้อข่าว</label>
+      <input type="text" id="newsTitle" value="หัวข้อข่าว / ชื่อกิจกรรม" placeholder="หัวข้อข่าว">
+    </div>
+
+    <div class="form-group">
+      <label for="titlePadding">📏 ระยะห่างจากขอบบน: <span class="padding-value" id="titlePaddingVal">40 mm</span></label>
+      <input type="range" id="titlePadding" min="0" max="80" step="1" value="40" oninput="applyTitlePadding()">
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #8a7a9a; margin-top: 2px;">
+        <span>0</span><span>40</span><span>80</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="titleFontSizeSelect">🔠 ขนาดตัวอักษรหัวข้อข่าว</label>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button class="format-btn" onclick="changeTitleFontSize(-1)" style="min-width: 48px; height: 48px;">−</button>
+        <select id="titleFontSizeSelect" onchange="applyTitleFontSize()" style="flex: 1;">
+          <option value="0.9">เล็ก (0.9)</option>
+          <option value="1.1">ค่อนข้างเล็ก (1.1)</option>
+          <option value="1.35" selected>ปกติ (1.35)</option>
+          <option value="1.55">ใหญ่ (1.55)</option>
+          <option value="1.8">ใหญ่พิเศษ (1.8)</option>
+          <option value="2.1">ใหญ่มาก (2.1)</option>
+          <option value="2.5">ใหญ่สุด (2.5)</option>
+        </select>
+        <button class="format-btn" onclick="changeTitleFontSize(1)" style="min-width: 48px; height: 48px;">+</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="titleStyle">สไตล์แถบหัวข้อ</label>
+      <select id="titleStyle" onchange="applyTitleStyle()">
+        <option value="ribbon">Ribbon ไล่สี (ค่าเริ่มต้น)</option>
+        <option value="gradient">Gradient เรียบ</option>
+        <option value="solid">สีเดียว</option>
+        <option value="outline">กรอบทองเท่านั้น</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>📐 จัดตำแหน่งหัวข้อข่าว</label>
+      <div class="format-toolbar">
+        <button class="format-btn" id="titleAlignLeft" onclick="setTitleAlign('left')"><i class="fas fa-align-left"></i></button>
+        <button class="format-btn active" id="titleAlignCenter" onclick="setTitleAlign('center')"><i class="fas fa-align-center"></i></button>
+        <button class="format-btn" id="titleAlignRight" onclick="setTitleAlign('right')"><i class="fas fa-align-right"></i></button>
+        <button class="format-btn" id="titleAlignJustify" onclick="setTitleAlign('justify')"><i class="fas fa-align-justify"></i></button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>🎨 สีตัวอักษรหัวข้อข่าว</label>
+      <div class="color-row">
+        <input type="color" id="titleColor" value="#ffffff" onchange="applyTitleColor()">
+        <button class="btn btn-outline" onclick="resetTitleColor()">↩️ สีขาว</button>
+      </div>
+      <div class="color-presets">
+        <div class="color-swatch" style="background:#ffffff;" onclick="setTitleColor('#ffffff')"></div>
+        <div class="color-swatch" style="background:#f5d76e;" onclick="setTitleColor('#f5d76e')"></div>
+        <div class="color-swatch" style="background:#ffe9a8;" onclick="setTitleColor('#ffe9a8')"></div>
+        <div class="color-swatch" style="background:#c9a84c;" onclick="setTitleColor('#c9a84c')"></div>
+        <div class="color-swatch" style="background:#2d1b3a;" onclick="setTitleColor('#2d1b3a')"></div>
+        <div class="color-swatch" style="background:#7b2d8e;" onclick="setTitleColor('#7b2d8e')"></div>
+        <div class="color-swatch" style="background:#ff6b6b;" onclick="setTitleColor('#ff6b6b')"></div>
+        <div class="color-swatch" style="background:#4ecdc4;" onclick="setTitleColor('#4ecdc4')"></div>
+      </div>
+    </div>
+
+    <div class="section-title">B. เนื้อหาข่าว</div>
+
+    <div class="form-group">
+      <label for="newsContent">เนื้อหาข่าว / รายละเอียด</label>
+      <textarea id="newsContent" rows="6">วันที่ …………………………………
+สถานที่ …………………………………
+
+สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์
+ดำเนินกิจกรรม/โครงการ …………………………………
+
+เพื่อ …………………………………………
+
+ผู้เข้าร่วม …………………………………………
+
+ผลการดำเนินงาน ……………………………………</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>🎨 ตกแต่งตัวอักษร</label>
+      <div class="format-toolbar">
+        <button class="format-btn" id="fmtBold" onclick="toggleFormat('bold')"><b>B</b></button>
+        <button class="format-btn" id="fmtItalic" onclick="toggleFormat('italic')"><i>I</i></button>
+        <button class="format-btn" id="fmtUnderline" onclick="toggleFormat('underline')"><u>U</u></button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>📐 จัดตำแหน่งเนื้อหาข่าว</label>
+      <div class="format-toolbar">
+        <button class="format-btn" id="fmtLeft" onclick="setAlign('left')"><i class="fas fa-align-left"></i></button>
+        <button class="format-btn" id="fmtCenter" onclick="setAlign('center')"><i class="fas fa-align-center"></i></button>
+        <button class="format-btn" id="fmtRight" onclick="setAlign('right')"><i class="fas fa-align-right"></i></button>
+        <button class="format-btn" id="fmtJustify" onclick="setAlign('justify')"><i class="fas fa-align-justify"></i></button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fontSizeSelect">🔠 ขนาดตัวอักษรเนื้อหา</label>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button class="format-btn" onclick="changeFontSize(-1)" style="min-width: 48px; height: 48px;">−</button>
+        <select id="fontSizeSelect" onchange="applyFontSize()" style="flex: 1;">
+          <option value="0.7">เล็กมาก (0.7)</option>
+          <option value="0.85">เล็ก (0.85)</option>
+          <option value="0.95" selected>ปกติ (0.95)</option>
+          <option value="1.1">ใหญ่ (1.1)</option>
+          <option value="1.25">ใหญ่พิเศษ (1.25)</option>
+          <option value="1.4">ใหญ่มาก (1.4)</option>
+        </select>
+        <button class="format-btn" onclick="changeFontSize(1)" style="min-width: 48px; height: 48px;">+</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lineHeight">📏 ระยะห่างบรรทัด: <span id="lineHeightVal">1.6</span></label>
+      <input type="range" id="lineHeight" min="1.0" max="2.5" step="0.1" value="1.6" oninput="applyLineHeight()">
+    </div>
+
+    <div class="form-group">
+      <label>🎨 สีตัวอักษรเนื้อหาข่าว</label>
+      <div class="color-row">
+        <input type="color" id="textColor" value="#2d1b3a" onchange="applyTextColor()">
+        <button class="btn btn-outline" onclick="resetTextColor()">↩️ สีเริ่มต้น</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>✨ สไตล์สำเร็จรูป (ราชการ)</label>
+      <div class="style-presets">
+        <button class="style-preset-btn active" onclick="applyStylePreset('official', this)">ราชการ</button>
+        <button class="style-preset-btn" onclick="applyStylePreset('official-bold', this)">ราชการหนา</button>
+        <button class="style-preset-btn" onclick="applyStylePreset('default', this)">พื้นฐาน</button>
+        <button class="style-preset-btn" onclick="applyStylePreset('classic', this)">คลาสสิก</button>
+        <button class="style-preset-btn" onclick="applyStylePreset('modern', this)">โมเดิร์น</button>
+        <button class="style-preset-btn" onclick="applyStylePreset('compact', this)">กระชับ</button>
+      </div>
+    </div>
+
+    <div class="section-title">C. รูปภาพ (5 รูป: 2+3)</div>
+
+    <div class="img-slot-group">
+      <div class="img-slot-header"><span class="img-slot-label"><i class="fas fa-image"></i> รูปที่ 1 (แถวบน)</span></div>
+      <div class="img-thumb" id="thumbMain1" onclick="document.getElementById('fileMain1').click()"><span>ยังไม่มีรูป</span></div>
+      <div class="img-slot-actions">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('fileMain1').click()"><i class="fas fa-upload"></i> อัปโหลด</button>
+        <button class="btn btn-outline btn-sm" onclick="previewImage('mainImage1')"><i class="fas fa-crop"></i> ปรับขอบ</button>
+        <button class="btn btn-danger btn-sm" onclick="removeImage('mainImage1')"><i class="fas fa-trash"></i> ลบ</button>
+      </div>
+      <input type="file" id="fileMain1" accept="image/*" style="display:none" onchange="handleImageUpload(event, 'mainImage1')">
+    </div>
+
+    <div class="img-slot-group">
+      <div class="img-slot-header"><span class="img-slot-label"><i class="fas fa-image"></i> รูปที่ 2 (แถวบน)</span></div>
+      <div class="img-thumb" id="thumbMain2" onclick="document.getElementById('fileMain2').click()"><span>ยังไม่มีรูป</span></div>
+      <div class="img-slot-actions">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('fileMain2').click()"><i class="fas fa-upload"></i> อัปโหลด</button>
+        <button class="btn btn-outline btn-sm" onclick="previewImage('mainImage2')"><i class="fas fa-crop"></i> ปรับขอบ</button>
+        <button class="btn btn-danger btn-sm" onclick="removeImage('mainImage2')"><i class="fas fa-trash"></i> ลบ</button>
+      </div>
+      <input type="file" id="fileMain2" accept="image/*" style="display:none" onchange="handleImageUpload(event, 'mainImage2')">
+    </div>
+
+    <div class="img-slot-group">
+      <div class="img-slot-header"><span class="img-slot-label"><i class="fas fa-image"></i> รูปที่ 3 (แถวล่าง)</span></div>
+      <div class="img-thumb" id="thumb3" onclick="document.getElementById('file3').click()"><span>ยังไม่มีรูป</span></div>
+      <div class="img-slot-actions">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('file3').click()"><i class="fas fa-upload"></i> อัปโหลด</button>
+        <button class="btn btn-outline btn-sm" onclick="previewImage('img3')"><i class="fas fa-crop"></i> ปรับขอบ</button>
+        <button class="btn btn-danger btn-sm" onclick="removeImage('img3')"><i class="fas fa-trash"></i> ลบ</button>
+      </div>
+      <input type="file" id="file3" accept="image/*" style="display:none" onchange="handleImageUpload(event, 'img3')">
+    </div>
+
+    <div class="img-slot-group">
+      <div class="img-slot-header"><span class="img-slot-label"><i class="fas fa-image"></i> รูปที่ 4 (แถวล่าง)</span></div>
+      <div class="img-thumb" id="thumb4" onclick="document.getElementById('file4').click()"><span>ยังไม่มีรูป</span></div>
+      <div class="img-slot-actions">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('file4').click()"><i class="fas fa-upload"></i> อัปโหลด</button>
+        <button class="btn btn-outline btn-sm" onclick="previewImage('img4')"><i class="fas fa-crop"></i> ปรับขอบ</button>
+        <button class="btn btn-danger btn-sm" onclick="removeImage('img4')"><i class="fas fa-trash"></i> ลบ</button>
+      </div>
+      <input type="file" id="file4" accept="image/*" style="display:none" onchange="handleImageUpload(event, 'img4')">
+    </div>
+
+    <div class="img-slot-group">
+      <div class="img-slot-header"><span class="img-slot-label"><i class="fas fa-image"></i> รูปที่ 5 (แถวล่าง)</span></div>
+      <div class="img-thumb" id="thumb5" onclick="document.getElementById('file5').click()"><span>ยังไม่มีรูป</span></div>
+      <div class="img-slot-actions">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('file5').click()"><i class="fas fa-upload"></i> อัปโหลด</button>
+        <button class="btn btn-outline btn-sm" onclick="previewImage('img5')"><i class="fas fa-crop"></i> ปรับขอบ</button>
+        <button class="btn btn-danger btn-sm" onclick="removeImage('img5')"><i class="fas fa-trash"></i> ลบ</button>
+      </div>
+      <input type="file" id="file5" accept="image/*" style="display:none" onchange="handleImageUpload(event, 'img5')">
+    </div>
+
+    <div class="section-title">D. พื้นหลัง</div>
+
+    <div class="form-group">
+      <label for="bgFile">เปลี่ยนภาพพื้นหลัง (JPG/PNG/WEBP)</label>
+      <input type="file" id="bgFile" accept="image/*" onchange="handleBackgroundUpload(event)">
+    </div>
+    <div class="form-group">
+      <label for="bgFit">การแสดงผลพื้นหลัง</label>
+      <select id="bgFit" onchange="updateBackground()">
+        <option value="cover">Cover (เต็มพื้นที่)</option>
+        <option value="contain">พอดีพื้นที่</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="overlayOpacity">ความโปร่งใส Overlay: <span id="overlayValue">1%</span></label>
+      <input type="range" id="overlayOpacity" min="0" max="100" value="1" oninput="updateOverlay()">
+    </div>
+
+    <!-- ✅ ปุ่มจัดการ Default Background -->
+    <div class="default-bg-buttons">
+      <button class="btn btn-gold" onclick="saveAsDefaultBackground()">
+        <i class="fas fa-bookmark"></i> ตั้งเป็นค่าเริ่มต้น
+      </button>
+      <button class="btn btn-primary" onclick="loadDefaultBackground()">
+        <i class="fas fa-undo"></i> คืนค่าเริ่มต้น
+      </button>
+    </div>
+
+    <button class="btn btn-outline" onclick="resetBackground()" style="margin-top:8px;">
+      <i class="fas fa-eraser"></i> 🎨 ล้างพื้นหลัง (ใช้ gradient)
+    </button>
+
+    <button class="btn btn-danger" onclick="clearDefaultBackground()" style="margin-top:8px; font-size:0.85rem;">
+      <i class="fas fa-trash-alt"></i> ลบ Default ที่บันทึกไว้
+    </button>
+
+    <div id="defaultBgInfo" class="default-bg-status" style="display:none;">
+      <i class="fas fa-check-circle status-icon"></i>
+      <strong>มีค่าเริ่มต้นบันทึกไว้</strong><br>
+      <span id="defaultBgInfoText" style="font-size:0.78rem;"></span>
+    </div>
+
+    <div class="section-title">📋 เทมเพลต</div>
+    <button class="btn btn-primary" onclick="loadMainTemplate()"><i class="fas fa-file-import"></i> 📥 โหลดเทมเพลตหลัก</button>
+    <button class="btn btn-danger" onclick="clearMainTemplate()"><i class="fas fa-eraser"></i> 🗑️ ล้างเทมเพลตหลัก</button>
+
+    <div class="section-title">💾 จัดการข้อมูล</div>
+    <button class="btn btn-gold" onclick="saveData()"><i class="fas fa-save"></i> 💾 บันทึกงาน</button>
+    <button class="btn btn-outline" onclick="resetData()"><i class="fas fa-undo-alt"></i> ↩️ คืนค่าเริ่มต้น</button>
+    <button class="btn btn-danger" onclick="clearAllImages()"><i class="fas fa-trash-alt"></i> 🗑️ ล้างรูปภาพทั้งหมด</button>
+
+    <div class="section-title">🖨️ ส่งออก</div>
+    <button class="btn btn-gold" onclick="openPreviewModal()"><i class="fas fa-eye"></i> 👁️ ดูตัวอย่างก่อนพิมพ์</button>
+    <button class="btn btn-primary" onclick="printA4()"><i class="fas fa-print"></i> 🖨️ พิมพ์ / Save PDF</button>
+    <button class="btn btn-gold" onclick="downloadPNG()"><i class="fas fa-camera"></i> 📸 ดาวน์โหลด PNG</button>
+    <div style="height: 40px;"></div>
+  </aside>
+
+  <button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i> <span id="toggleText">เปิด/ปิด หลังบ้าน</span>
+  </button>
+
+  <main class="preview-area" id="previewArea">
+    <div class="preview-toolbar">
+      <button class="btn btn-gold" onclick="openPreviewModal()"><i class="fas fa-eye"></i> ดูตัวอย่าง</button>
+      <button class="btn btn-gold" onclick="printA4()"><i class="fas fa-print"></i> PDF</button>
+      <button class="btn btn-primary" onclick="downloadPNG()"><i class="fas fa-camera"></i> PNG</button>
+      <button class="btn btn-outline" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+      <button class="btn btn-outline" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
+      <button class="btn btn-outline" onclick="zoomReset()"><i class="fas fa-compress"></i></button>
+    </div>
+
+    <div class="a4-container" id="a4Container">
+      <div class="a4-overlay" id="a4Overlay"></div>
+      <div class="a4-content" id="a4Content">
+
+        <div class="news-title-box" id="newsTitleBox">
+          <h2 class="news-title-text" id="newsTitleDisplay" contenteditable="true" spellcheck="false" data-align="center">หัวข้อข่าว / ชื่อกิจกรรม</h2>
+        </div>
+
+        <div class="row-main-images">
+          <div class="main-image-box" id="mainImageBox1" onclick="document.getElementById('fileMain1').click()">
+            <span class="placeholder-text" id="mainImagePlaceholder1">คลิกเพื่อใส่รูปที่ 1</span>
+            <div class="image-bg" id="mainImage1" style="display:none;"></div>
+          </div>
+          <div class="main-image-box" id="mainImageBox2" onclick="document.getElementById('fileMain2').click()">
+            <span class="placeholder-text" id="mainImagePlaceholder2">คลิกเพื่อใส่รูปที่ 2</span>
+            <div class="image-bg" id="mainImage2" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="row-3">
+          <div class="img-box" id="imgBox3" onclick="document.getElementById('file3').click()">
+            <span class="placeholder-text" id="imgPlaceholder3">คลิกเพื่อใส่รูปที่ 3</span>
+            <div class="image-bg" id="img3" style="display:none;"></div>
+          </div>
+          <div class="img-box" id="imgBox4" onclick="document.getElementById('file4').click()">
+            <span class="placeholder-text" id="imgPlaceholder4">คลิกเพื่อใส่รูปที่ 4</span>
+            <div class="image-bg" id="img4" style="display:none;"></div>
+          </div>
+          <div class="img-box" id="imgBox5" onclick="document.getElementById('file5').click()">
+            <span class="placeholder-text" id="imgPlaceholder5">คลิกเพื่อใส่รูปที่ 5</span>
+            <div class="image-bg" id="img5" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="row-content">
+          <div class="news-content-box">
+            <div class="news-content-org">
+              <div class="org-name-line" id="orgName" contenteditable="true" spellcheck="false">สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์</div>
+            </div>
+
+            <div class="news-content-text style-official" id="newsContentDisplay" contenteditable="true" spellcheck="false"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="overflow-warning" id="overflowWarning">
+      <i class="fas fa-exclamation-triangle"></i> เนื้อหาข่าวอาจยาวเกินพื้นที่
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="crop-modal" id="cropModal">
+    <div class="crop-container">
+      <h3 id="cropModalTitle"><i class="fas fa-crop"></i> ปรับตำแหน่งและขอบรูป</h3>
+      <img id="cropImage" src="" alt="Preview">
+      <div style="width: 100%;" id="cropControls">
+        <label>↔️ ตำแหน่งแนวนอน: <span id="cropXVal">50%</span></label>
+        <input type="range" id="cropX" min="0" max="100" value="50" style="width:100%;" oninput="updateCropPreview()">
+      </div>
+      <div style="width: 100%;" id="cropControlsY">
+        <label>↕️ ตำแหน่งแนวตั้ง: <span id="cropYVal">50%</span></label>
+        <input type="range" id="cropY" min="0" max="100" value="50" style="width:100%;" oninput="updateCropPreview()">
+      </div>
+      <div style="width: 100%;" id="cropControlsZoom">
+        <label>🔍 ซูม (ตัดขอบ): <span id="cropZoomVal">100%</span></label>
+        <input type="range" id="cropZoom" min="50" max="300" value="100" style="width:100%;" oninput="updateCropPreview()">
+      </div>
+      <div class="crop-controls">
+        <button class="btn btn-gold" id="cropApplyBtn" onclick="applyCrop()"><i class="fas fa-check"></i> ใช้รูปนี้</button>
+        <button class="btn btn-outline" onclick="closeCropModal()"><i class="fas fa-times"></i> ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-modal" id="previewModal">
+    <div class="preview-modal-header">
+      <h2><i class="fas fa-eye"></i> ตัวอย่างก่อนพิมพ์</h2>
+      <button class="btn btn-gold" onclick="printA4()"><i class="fas fa-print"></i> พิมพ์ / Save PDF</button>
+      <button class="btn btn-primary" onclick="downloadPNG()"><i class="fas fa-camera"></i> PNG</button>
+      <button class="btn btn-outline" onclick="closePreviewModal()"><i class="fas fa-times"></i> ปิด</button>
+    </div>
+    <div class="preview-modal-body" id="previewModalBody"></div>
+  </div>
+
+  <script>
+    // ============================================================
+    // DSD8 News Template - v20.9
+    // - ลบปุ่มล็อก + ฟังก์ชันล็อกออก
+    // - ชื่อสถาบันเหลือบรรทัดเดียว
+    // - ปรับระยะขอบให้สวย
+    // ============================================================
+    const STORAGE_KEY = 'dsd8_news_template_data_v20';
+    const TEMPLATE_KEY = 'dsd8_news_main_template_v20';
+    const DEFAULT_BG_KEY = 'dsd8_news_default_background_v20';
+    const FONT_SIZES = [0.7, 0.85, 0.95, 1.1, 1.25, 1.4];
+    const TITLE_FONT_SIZES = [0.9, 1.1, 1.35, 1.55, 1.8, 2.1, 2.5];
+    const ORG_FONT_SIZES = [0.95, 1.15, 1.3, 1.45, 1.65, 1.85, 2.1];
+    const DEFAULT_BG_GRADIENT = 'linear-gradient(135deg, #faf5ff 0%, #f0e6fa 25%, #fdf8e8 50%, #f5edda 75%, #faf5ff 100%)';
+
+    const defaultData = {
+      // ✅ ชื่อสถาบัน บรรทัดเดียว
+      orgName: 'สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์',
+      orgFontSize: 1.45,
+      orgColor: '#f5d76e',
+      orgFontFamily: "'TH Sarabun New', 'Sarabun', Tahoma, sans-serif",
+
+      newsTitle: 'หัวข้อข่าว / ชื่อกิจกรรม',
+      newsContent: `วันที่ …………………………………
+สถานที่ …………………………………
+
+สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์
+ดำเนินกิจกรรม/โครงการ …………………………………
+
+เพื่อ …………………………………………
+
+ผู้เข้าร่วม …………………………………………
+
+ผลการดำเนินงาน ……………………………………`,
+      titlePadding: 40,
+      mainImage1: null, mainImage2: null,
+      img3: null, img4: null, img5: null,
+      crops: {
+        mainImage1: { x: 50, y: 50, zoom: 100 },
+        mainImage2: { x: 50, y: 50, zoom: 100 },
+        img3: { x: 50, y: 50, zoom: 100 },
+        img4: { x: 50, y: 50, zoom: 100 },
+        img5: { x: 50, y: 50, zoom: 100 }
+      },
+      backgroundImage: null, bgFit: 'cover', overlayOpacity: 1,
+      newsFontSize: 0.95, titleFontSize: 1.35, lineHeight: 1.6,
+      textColor: '#2d1b3a', textBold: false, textItalic: false, textUnderline: false,
+      textAlign: 'left', titleColor: '#ffffff', titleAlign: 'center',
+      titleBold: true, titleItalic: false, titleUnderline: false,
+      stylePreset: 'official', titleStyle: 'ribbon'
+    };
+
+    let currentData = JSON.parse(JSON.stringify(defaultData));
+    let currentZoom = 1;
+    let cropTargetId = null, cropImageSrc = null, cropMode = 'crop';
+
+    function init() {
+      loadFromStorage();
+      
+      // ✅ ถ้าไม่มีข้อมูลที่เคยบันทึก → ใช้ Default ที่ตั้งไว้
+      const hasStoredData = !!localStorage.getItem(STORAGE_KEY);
+      if (!hasStoredData) {
+        autoLoadDefaultBackground();
+      }
+      
+      applyDataToPreview();
+      attachEventListeners();
+      updateDefaultBgInfo();
+      checkOverflow();
+      updateToggleText();
+      window.addEventListener('resize', updateToggleText);
+    }
+
+    function updateToggleText() {
+      const text = document.getElementById('toggleText');
+      if (!text) return;
+      text.textContent = window.innerWidth <= 768 ? 'ตั้งค่า' : 'เปิด/ปิด หลังบ้าน';
+    }
+
+    document.addEventListener('click', function(e) {
+      const sidebar = document.getElementById('sidebar');
+      if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+        if (!sidebar.contains(e.target) && !e.target.closest('.mobile-toggle')) {
+          sidebar.classList.remove('open');
+        }
+      }
+    });
+
+    function loadFromStorage() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          const clean = {};
+          Object.keys(defaultData).forEach(k => {
+            if (k === 'crops') clean[k] = parsed[k] || JSON.parse(JSON.stringify(defaultData.crops));
+            else clean[k] = parsed[k] !== undefined ? parsed[k] : defaultData[k];
+          });
+          currentData = clean;
+        }
+      } catch (e) { console.warn(e); }
+    }
+
+    function applyDataToPreview() {
+      applyOrgDataToPreview();
+      document.getElementById('newsTitleDisplay').textContent = currentData.newsTitle;
+      document.getElementById('newsContentDisplay').textContent = currentData.newsContent;
+      setImageDisplay('main1', currentData.mainImage1, currentData.crops.mainImage1);
+      setImageDisplay('main2', currentData.mainImage2, currentData.crops.mainImage2);
+      setImageDisplay('img3', currentData.img3, currentData.crops.img3);
+      setImageDisplay('img4', currentData.img4, currentData.crops.img4);
+      setImageDisplay('img5', currentData.img5, currentData.crops.img5);
+      updateBackground();
+      document.getElementById('overlayOpacity').value = currentData.overlayOpacity;
+      updateOverlay();
+      document.getElementById('newsTitle').value = currentData.newsTitle;
+      document.getElementById('newsContent').value = currentData.newsContent;
+      document.getElementById('bgFit').value = currentData.bgFit;
+      document.getElementById('titleStyle').value = currentData.titleStyle;
+      document.getElementById('titlePadding').value = currentData.titlePadding;
+      document.getElementById('titlePaddingVal').textContent = currentData.titlePadding + ' mm';
+      applyTitlePaddingToPreview();
+      applyFontSizeToPreview();
+      syncFontSizeControls();
+      applyTitleFontSizeToPreview();
+      syncTitleFontSizeControls();
+      document.getElementById('lineHeight').value = currentData.lineHeight;
+      document.getElementById('lineHeightVal').textContent = currentData.lineHeight;
+      document.getElementById('textColor').value = currentData.textColor;
+      document.getElementById('titleColor').value = currentData.titleColor;
+      applyTitleFormat();
+      applyTextFormat();
+      applyTitleStyle();
+      updateAllThumbs();
+    }
+
+    // ============ ORG HEADER FUNCTIONS ============
+    function applyOrgDataToPreview() {
+      const org = currentData.orgName || 'สถาบันพัฒนาฝีมือแรงงาน 8 นครสวรรค์';
+      const orgFontSize = currentData.orgFontSize || 1.45;
+      const orgColor = currentData.orgColor || '#f5d76e';
+      const orgFontFamily = currentData.orgFontFamily || "'TH Sarabun New', 'Sarabun', Tahoma, sans-serif";
+
+      const el = document.getElementById('orgName');
+      if (el) {
+        el.textContent = org;
+        el.style.fontSize = orgFontSize + 'rem';
+        el.style.color = orgColor;
+        el.style.fontFamily = orgFontFamily;
+        el.style.textShadow = `1px 1px 2px rgba(0, 0, 0, 0.4), 0 0 12px ${hexToRgba(orgColor, 0.6)}`;
+      }
+
+      // อัปเดต UI
+      const input = document.getElementById('orgNameInput');
+      const sizeSelect = document.getElementById('orgFontSizeSelect');
+      const color = document.getElementById('orgColor');
+      const fontSelect = document.getElementById('orgFontFamily');
+      if (input) input.value = org;
+      if (sizeSelect) sizeSelect.value = orgFontSize.toString();
+      if (color) color.value = orgColor;
+      if (fontSelect) fontSelect.value = orgFontFamily;
+
+      if (!currentData.orgName) currentData.orgName = org;
+      if (!currentData.orgFontSize) currentData.orgFontSize = orgFontSize;
+      if (!currentData.orgColor) currentData.orgColor = orgColor;
+      if (!currentData.orgFontFamily) currentData.orgFontFamily = orgFontFamily;
+    }
+
+    function hexToRgba(hex, alpha) {
+      if (!hex || hex.length < 7) return `rgba(255, 255, 255, ${alpha})`;
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function applyOrgFontSize() {
+      const value = parseFloat(document.getElementById('orgFontSizeSelect').value);
+      currentData.orgFontSize = value;
+      applyOrgDataToPreview();
+    }
+
+    function changeOrgFontSize(direction) {
+      let currentIndex = 3;
+      let minDiff = Math.abs(ORG_FONT_SIZES[0] - (currentData.orgFontSize || 1.45));
+      ORG_FONT_SIZES.forEach((size, i) => {
+        const diff = Math.abs(size - (currentData.orgFontSize || 1.45));
+        if (diff < minDiff) { minDiff = diff; currentIndex = i; }
+      });
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = 0;
+      if (newIndex >= ORG_FONT_SIZES.length) newIndex = ORG_FONT_SIZES.length - 1;
+      currentData.orgFontSize = ORG_FONT_SIZES[newIndex];
+      document.getElementById('orgFontSizeSelect').value = currentData.orgFontSize.toString();
+      applyOrgDataToPreview();
+    }
+
+    function applyOrgColor() {
+      currentData.orgColor = document.getElementById('orgColor').value;
+      applyOrgDataToPreview();
+    }
+
+    function setOrgColor(color) {
+      currentData.orgColor = color;
+      document.getElementById('orgColor').value = color;
+      applyOrgDataToPreview();
+    }
+
+    function resetOrgColor() {
+      currentData.orgColor = '#f5d76e';
+      document.getElementById('orgColor').value = '#f5d76e';
+      applyOrgDataToPreview();
+    }
+
+    function applyOrgFont() {
+      currentData.orgFontFamily = document.getElementById('orgFontFamily').value;
+      applyOrgDataToPreview();
+    }
+    // ============ END ORG HEADER ============
+
+    function applyTitlePadding() {
+      const value = parseInt(document.getElementById('titlePadding').value);
+      currentData.titlePadding = value;
+      document.getElementById('titlePaddingVal').textContent = value + ' mm';
+      applyTitlePaddingToPreview();
+    }
+    function applyTitlePaddingToPreview() {
+      const content = document.getElementById('a4Content');
+      if (content) content.style.setProperty('--title-padding', currentData.titlePadding + 'mm');
+    }
+
+    function applyTitleFormat() {
+      const el = document.getElementById('newsTitleDisplay');
+      el.style.color = currentData.titleColor;
+      el.style.textAlign = currentData.titleAlign;
+      el.style.fontWeight = currentData.titleBold ? '800' : '500';
+      el.style.fontStyle = currentData.titleItalic ? 'italic' : 'normal';
+      el.style.textDecoration = currentData.titleUnderline ? 'underline' : 'none';
+      el.setAttribute('data-align', currentData.titleAlign);
+      document.getElementById('titleAlignLeft').classList.toggle('active', currentData.titleAlign === 'left');
+      document.getElementById('titleAlignCenter').classList.toggle('active', currentData.titleAlign === 'center');
+      document.getElementById('titleAlignRight').classList.toggle('active', currentData.titleAlign === 'right');
+      document.getElementById('titleAlignJustify').classList.toggle('active', currentData.titleAlign === 'justify');
+    }
+    function setTitleAlign(align) {
+      currentData.titleAlign = align; applyTitleFormat();
+      showToast('📐 ' + getAlignLabel(align));
+    }
+    function applyTitleColor() { currentData.titleColor = document.getElementById('titleColor').value; applyTitleFormat(); }
+    function setTitleColor(color) { currentData.titleColor = color; document.getElementById('titleColor').value = color; applyTitleFormat(); }
+    function resetTitleColor() { currentData.titleColor = '#ffffff'; document.getElementById('titleColor').value = '#ffffff'; applyTitleFormat(); }
+
+    function applyTitleFontSizeToPreview() {
+      document.getElementById('newsTitleDisplay').style.fontSize = currentData.titleFontSize + 'rem';
+    }
+    function applyTitleFontSize() {
+      currentData.titleFontSize = parseFloat(document.getElementById('titleFontSizeSelect').value);
+      applyTitleFontSizeToPreview();
+    }
+    function syncTitleFontSizeControls() {
+      const select = document.getElementById('titleFontSizeSelect');
+      if (!select) return;
+      let closest = TITLE_FONT_SIZES[0];
+      let minDiff = Math.abs(TITLE_FONT_SIZES[0] - currentData.titleFontSize);
+      TITLE_FONT_SIZES.forEach(size => {
+        const diff = Math.abs(size - currentData.titleFontSize);
+        if (diff < minDiff) { minDiff = diff; closest = size; }
+      });
+      select.value = closest.toString();
+    }
+    function changeTitleFontSize(direction) {
+      let currentIndex = 2;
+      let minDiff = Math.abs(TITLE_FONT_SIZES[0] - currentData.titleFontSize);
+      TITLE_FONT_SIZES.forEach((size, i) => {
+        const diff = Math.abs(size - currentData.titleFontSize);
+        if (diff < minDiff) { minDiff = diff; currentIndex = i; }
+      });
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = 0;
+      if (newIndex >= TITLE_FONT_SIZES.length) newIndex = TITLE_FONT_SIZES.length - 1;
+      currentData.titleFontSize = TITLE_FONT_SIZES[newIndex];
+      document.getElementById('titleFontSizeSelect').value = currentData.titleFontSize.toString();
+      applyTitleFontSizeToPreview();
+    }
+
+    function applyTextFormat() {
+      const el = document.getElementById('newsContentDisplay');
+      el.style.fontSize = currentData.newsFontSize + 'rem';
+      el.style.lineHeight = currentData.lineHeight;
+      el.style.color = currentData.textColor;
+      el.style.fontWeight = currentData.textBold ? '700' : '400';
+      el.style.fontStyle = currentData.textItalic ? 'italic' : 'normal';
+      el.style.textDecoration = currentData.textUnderline ? 'underline' : 'none';
+      el.style.textAlign = currentData.textAlign;
+      document.getElementById('fmtBold').classList.toggle('active', currentData.textBold);
+      document.getElementById('fmtItalic').classList.toggle('active', currentData.textItalic);
+      document.getElementById('fmtUnderline').classList.toggle('active', currentData.textUnderline);
+      document.getElementById('fmtLeft').classList.toggle('active', currentData.textAlign === 'left');
+      document.getElementById('fmtCenter').classList.toggle('active', currentData.textAlign === 'center');
+      document.getElementById('fmtRight').classList.toggle('active', currentData.textAlign === 'right');
+      document.getElementById('fmtJustify').classList.toggle('active', currentData.textAlign === 'justify');
+      el.classList.remove('style-elegant', 'style-classic', 'style-modern', 'style-official', 'style-official-bold');
+      if (currentData.stylePreset === 'official') el.classList.add('style-official');
+      else if (currentData.stylePreset === 'official-bold') el.classList.add('style-official-bold');
+      else if (currentData.stylePreset === 'classic') el.classList.add('style-classic');
+      else if (currentData.stylePreset === 'modern') el.classList.add('style-modern');
+    }
+    function toggleFormat(type) {
+      if (type === 'bold') currentData.textBold = !currentData.textBold;
+      if (type === 'italic') currentData.textItalic = !currentData.textItalic;
+      if (type === 'underline') currentData.textUnderline = !currentData.textUnderline;
+      applyTextFormat();
+    }
+    function setAlign(align) {
+      currentData.textAlign = align; applyTextFormat();
+      showToast('📐 ' + getAlignLabel(align));
+    }
+    function getAlignLabel(align) {
+      return { left: 'ชิดซ้าย', center: 'กึ่งกลาง', right: 'ชิดขวา', justify: 'เต็มแนว' }[align] || align;
+    }
+    function applyFontSize() {
+      currentData.newsFontSize = parseFloat(document.getElementById('fontSizeSelect').value);
+      applyFontSizeToPreview(); checkOverflow();
+    }
+    function applyFontSizeToPreview() {
+      document.getElementById('newsContentDisplay').style.fontSize = currentData.newsFontSize + 'rem';
+    }
+    function syncFontSizeControls() {
+      const select = document.getElementById('fontSizeSelect');
+      if (!select) return;
+      let closest = FONT_SIZES[0];
+      let minDiff = Math.abs(FONT_SIZES[0] - currentData.newsFontSize);
+      FONT_SIZES.forEach(size => {
+        const diff = Math.abs(size - currentData.newsFontSize);
+        if (diff < minDiff) { minDiff = diff; closest = size; }
+      });
+      select.value = closest.toString();
+    }
+    function changeFontSize(direction) {
+      let currentIndex = 2;
+      let minDiff = Math.abs(FONT_SIZES[0] - currentData.newsFontSize);
+      FONT_SIZES.forEach((size, i) => {
+        const diff = Math.abs(size - currentData.newsFontSize);
+        if (diff < minDiff) { minDiff = diff; currentIndex = i; }
+      });
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = 0;
+      if (newIndex >= FONT_SIZES.length) newIndex = FONT_SIZES.length - 1;
+      currentData.newsFontSize = FONT_SIZES[newIndex];
+      document.getElementById('fontSizeSelect').value = currentData.newsFontSize.toString();
+      applyFontSizeToPreview(); checkOverflow();
+    }
+    function applyLineHeight() {
+      currentData.lineHeight = parseFloat(document.getElementById('lineHeight').value);
+      document.getElementById('lineHeightVal').textContent = currentData.lineHeight.toFixed(1);
+      document.getElementById('newsContentDisplay').style.lineHeight = currentData.lineHeight;
+      checkOverflow();
+    }
+    function applyTextColor() {
+      currentData.textColor = document.getElementById('textColor').value;
+      document.getElementById('newsContentDisplay').style.color = currentData.textColor;
+    }
+    function resetTextColor() {
+      currentData.textColor = '#2d1b3a';
+      document.getElementById('textColor').value = '#2d1b3a';
+      document.getElementById('newsContentDisplay').style.color = currentData.textColor;
+    }
+
+    function applyStylePreset(preset, btn) {
+      currentData.stylePreset = preset;
+      document.querySelectorAll('.style-preset-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      if (preset === 'official') {
+        currentData.textBold = false; currentData.textItalic = false; currentData.textUnderline = false;
+        currentData.lineHeight = 1.7;
+        document.getElementById('lineHeight').value = 1.7;
+        document.getElementById('lineHeightVal').textContent = '1.7';
+      } else if (preset === 'official-bold') {
+        currentData.textBold = true; currentData.textItalic = false;
+        currentData.lineHeight = 1.7;
+        document.getElementById('lineHeight').value = 1.7;
+        document.getElementById('lineHeightVal').textContent = '1.7';
+      } else if (preset === 'default') {
+        currentData.textBold = false; currentData.textItalic = false; currentData.textUnderline = false;
+      } else if (preset === 'classic') {
+        currentData.textBold = false; currentData.textItalic = false;
+      } else if (preset === 'modern') {
+        currentData.textBold = true; currentData.textItalic = false;
+      } else if (preset === 'compact') {
+        currentData.lineHeight = 1.4;
+        document.getElementById('lineHeight').value = 1.4;
+        document.getElementById('lineHeightVal').textContent = '1.4';
+      }
+      applyTextFormat();
+    }
+
+    function applyTitleStyle() {
+      const box = document.getElementById('newsTitleBox');
+      const style = document.getElementById('titleStyle').value;
+      currentData.titleStyle = style;
+      box.style.background = ''; box.style.backgroundImage = '';
+      box.style.border = ''; box.style.boxShadow = '';
+      if (style === 'gradient') {
+        box.style.background = 'linear-gradient(135deg, #7b2d8e 0%, #5a1e6b 100%)';
+        box.style.border = '2.5px solid #c9a84c';
+      } else if (style === 'solid') {
+        box.style.background = '#5a1e6b';
+        box.style.border = '2.5px solid #c9a84c';
+      } else if (style === 'outline') {
+        box.style.background = 'transparent';
+        box.style.border = '3px solid #c9a84c';
+      }
+    }
+
+    function setImageDisplay(id, dataUrl, crop) {
+      const imgMap = {
+        'main1': { img: 'mainImage1', placeholder: 'mainImagePlaceholder1' },
+        'main2': { img: 'mainImage2', placeholder: 'mainImagePlaceholder2' },
+        'img3': { img: 'img3', placeholder: 'imgPlaceholder3' },
+        'img4': { img: 'img4', placeholder: 'imgPlaceholder4' },
+        'img5': { img: 'img5', placeholder: 'imgPlaceholder5' }
+      };
+      const m = imgMap[id];
+      if (!m) return;
+      const imgEl = document.getElementById(m.img);
+      const placeholderEl = document.getElementById(m.placeholder);
+      if (dataUrl) {
+        imgEl.style.display = 'block';
+        if (placeholderEl) placeholderEl.style.display = 'none';
+        if (crop) {
+          const zoom = crop.zoom / 100;
+          imgEl.style.backgroundImage = 'url(' + dataUrl + ')';
+          imgEl.style.backgroundPosition = crop.x + '% ' + crop.y + '%';
+          imgEl.style.backgroundRepeat = 'no-repeat';
+          if (zoom === 1) imgEl.style.backgroundSize = 'cover';
+          else imgEl.style.backgroundSize = (zoom * 100) + '% auto';
+        } else {
+          imgEl.style.backgroundImage = 'url(' + dataUrl + ')';
+          imgEl.style.backgroundSize = 'cover';
+          imgEl.style.backgroundPosition = 'center center';
+          imgEl.style.backgroundRepeat = 'no-repeat';
+        }
+      } else {
+        imgEl.style.display = 'none'; imgEl.style.backgroundImage = '';
+        if (placeholderEl) placeholderEl.style.display = 'block';
+      }
+      updateThumb(id, dataUrl, crop);
+    }
+
+    function updateThumb(id, dataUrl, crop) {
+      const thumbMap = { 'main1': 'thumbMain1', 'main2': 'thumbMain2',
+        'img3': 'thumb3', 'img4': 'thumb4', 'img5': 'thumb5' };
+      const thumbEl = document.getElementById(thumbMap[id]);
+      if (!thumbEl) return;
+      if (dataUrl) {
+        let style = 'background-image: url(' + dataUrl + ');';
+        if (crop) {
+          const zoom = crop.zoom / 100;
+          style += 'background-position: ' + crop.x + '% ' + crop.y + '%;';
+          style += 'background-repeat: no-repeat;';
+          style += 'background-size: ' + (zoom === 1 ? 'cover' : (zoom * 100) + '% auto') + ';';
+        } else {
+          style += 'background-size: cover; background-position: center;';
+        }
+        thumbEl.innerHTML = '<div style="width:100%;height:100%;' + style + '"></div>';
+      } else {
+        thumbEl.innerHTML = '<span>ยังไม่มีรูป</span>';
+      }
+    }
+
+    function updateAllThumbs() {
+      updateThumb('main1', currentData.mainImage1, currentData.crops.mainImage1);
+      updateThumb('main2', currentData.mainImage2, currentData.crops.mainImage2);
+      updateThumb('img3', currentData.img3, currentData.crops.img3);
+      updateThumb('img4', currentData.img4, currentData.crops.img4);
+      updateThumb('img5', currentData.img5, currentData.crops.img5);
+    }
+
+    function handleImageUpload(event, targetId) {
+      const file = event.target.files[0];
+      if (!file) return;
+      processImageFile(file, targetId, 'crop');
+    }
+    function processImageFile(file, targetId, mode) {
+      if (!file.type.match('image.*')) { showToast('❌ กรุณาเลือกไฟล์รูปภาพ'); return; }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        cropTargetId = targetId; cropImageSrc = e.target.result;
+        cropMode = mode || 'crop';
+        openCropModal(e.target.result, cropMode);
+      };
+      reader.readAsDataURL(file);
+    }
+    function previewImage(targetId) {
+      const dataUrl = currentData[targetId];
+      if (!dataUrl) { showToast('⚠️ ยังไม่มีรูปภาพ'); return; }
+      cropTargetId = targetId; cropImageSrc = dataUrl;
+      cropMode = 'crop';
+      openCropModal(dataUrl, 'crop');
+    }
+    function openCropModal(src, mode) {
+      document.getElementById('cropImage').src = src;
+      const crop = currentData.crops[cropTargetId] || { x: 50, y: 50, zoom: 100 };
+      document.getElementById('cropX').value = crop.x;
+      document.getElementById('cropY').value = crop.y;
+      document.getElementById('cropZoom').value = crop.zoom;
+      updateCropPreview();
+      const title = document.getElementById('cropModalTitle');
+      const applyBtn = document.getElementById('cropApplyBtn');
+      const controls = document.getElementById('cropControls');
+      const controlsY = document.getElementById('cropControlsY');
+      const controlsZoom = document.getElementById('cropControlsZoom');
+      if (mode === 'preview') {
+        title.innerHTML = '<i class="fas fa-eye"></i> ตัวอย่างรูปภาพ';
+        applyBtn.innerHTML = '<i class="fas fa-check"></i> ยืนยัน';
+        controls.style.display = 'none'; controlsY.style.display = 'none';
+        controlsZoom.style.display = 'none';
+      } else {
+        title.innerHTML = '<i class="fas fa-crop"></i> ปรับตำแหน่งและขอบรูป';
+        applyBtn.innerHTML = '<i class="fas fa-check"></i> ใช้รูปนี้';
+        controls.style.display = 'block'; controlsY.style.display = 'block';
+        controlsZoom.style.display = 'block';
+      }
+      document.getElementById('cropModal').classList.add('open');
+    }
+    function closeCropModal() {
+      document.getElementById('cropModal').classList.remove('open');
+      cropTargetId = null; cropImageSrc = null; cropMode = 'crop';
+    }
+    function updateCropPreview() {
+      const x = document.getElementById('cropX').value;
+      const y = document.getElementById('cropY').value;
+      const zoom = document.getElementById('cropZoom').value;
+      document.getElementById('cropXVal').textContent = x + '%';
+      document.getElementById('cropYVal').textContent = y + '%';
+      document.getElementById('cropZoomVal').textContent = zoom + '%';
+      const img = document.getElementById('cropImage');
+      img.style.objectPosition = x + '% ' + y + '%';
+      img.style.transform = 'scale(' + (zoom / 100) + ')';
+      img.style.transformOrigin = x + '% ' + y + '%';
+    }
+    function applyCrop() {
+      if (!cropTargetId || !cropImageSrc) return;
+      const x = parseInt(document.getElementById('cropX').value);
+      const y = parseInt(document.getElementById('cropY').value);
+      const zoom = parseInt(document.getElementById('cropZoom').value);
+      currentData.crops[cropTargetId] = { x, y, zoom };
+      if (cropMode === 'crop' && cropImageSrc) currentData[cropTargetId] = cropImageSrc;
+      const idMap = { 'mainImage1': 'main1', 'mainImage2': 'main2',
+        'img3': 'img3', 'img4': 'img4', 'img5': 'img5' };
+      setImageDisplay(idMap[cropTargetId] || cropTargetId, currentData[cropTargetId], currentData.crops[cropTargetId]);
+      showToast('✅ ปรับรูปเรียบร้อย'); closeCropModal();
+    }
+    function removeImage(targetId) {
+      if (!confirm('ต้องการลบรูปภาพนี้หรือไม่?')) return;
+      currentData[targetId] = null;
+      currentData.crops[targetId] = { x: 50, y: 50, zoom: 100 };
+      const idMap = { 'mainImage1': 'main1', 'mainImage2': 'main2',
+        'img3': 'img3', 'img4': 'img4', 'img5': 'img5' };
+      setImageDisplay(idMap[targetId] || targetId, null, null);
+      showToast('🗑️ ลบรูปภาพแล้ว');
+    }
+
+    function handleBackgroundUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentData.backgroundImage = e.target.result;
+        updateBackground();
+        showToast('🖼️ เปลี่ยนภาพพื้นหลังเรียบร้อย');
+      };
+      reader.readAsDataURL(file);
+    }
+    function updateBackground() {
+      const container = document.getElementById('a4Container');
+      const fit = document.getElementById('bgFit').value;
+      currentData.bgFit = fit;
+      if (currentData.backgroundImage) {
+        container.style.backgroundImage = 'url(' + currentData.backgroundImage + ')';
+        container.style.backgroundSize = fit === 'cover' ? 'cover' : 'contain';
+        container.style.backgroundPosition = 'center';
+        container.style.backgroundRepeat = 'no-repeat';
+      } else {
+        container.style.backgroundImage = DEFAULT_BG_GRADIENT;
+        container.style.backgroundSize = 'cover';
+        container.style.backgroundPosition = 'center';
+        container.style.backgroundRepeat = 'no-repeat';
+      }
+    }
+    function resetBackground() {
+      currentData.backgroundImage = null;
+      document.getElementById('bgFile').value = '';
+      updateBackground();
+      showToast('🎨 ล้างพื้นหลัง (ใช้ gradient)');
+    }
+
+    // ============ DEFAULT BACKGROUND FUNCTIONS ============
+    function saveAsDefaultBackground() {
+      try {
+        const defaultBg = {
+          backgroundImage: currentData.backgroundImage,
+          bgFit: currentData.bgFit,
+          savedAt: new Date().toISOString()
+        };
+        localStorage.setItem(DEFAULT_BG_KEY, JSON.stringify(defaultBg));
+        updateDefaultBgInfo();
+        showToast('💾 บันทึกเป็นค่าเริ่มต้นเรียบร้อย!');
+      } catch (e) {
+        console.error(e);
+        showToast('❌ ไม่สามารถบันทึกได้ (พื้นที่เต็ม)');
+      }
+    }
+
+    function loadDefaultBackground() {
+      try {
+        const stored = localStorage.getItem(DEFAULT_BG_KEY);
+        if (!stored) {
+          showToast('⚠️ ยังไม่มีค่าเริ่มต้นที่บันทึกไว้');
+          return;
+        }
+        const defaultBg = JSON.parse(stored);
+        currentData.backgroundImage = defaultBg.backgroundImage;
+        currentData.bgFit = defaultBg.bgFit || 'cover';
+        document.getElementById('bgFit').value = currentData.bgFit;
+        updateBackground();
+        showToast('✅ โหลดค่าเริ่มต้นเรียบร้อย!');
+      } catch (e) {
+        console.error(e);
+        showToast('❌ ไม่สามารถโหลดค่าเริ่มต้นได้');
+      }
+    }
+
+    function clearDefaultBackground() {
+      if (!confirm('ต้องการลบ "ค่าเริ่มต้น" ที่บันทึกไว้หรือไม่?')) return;
+      try {
+        localStorage.removeItem(DEFAULT_BG_KEY);
+        updateDefaultBgInfo();
+        showToast('🗑️ ลบค่าเริ่มต้นแล้ว');
+      } catch (e) {
+        showToast('❌ ไม่สามารถลบได้');
+      }
+    }
+
+    function updateDefaultBgInfo() {
+      const infoBox = document.getElementById('defaultBgInfo');
+      const infoText = document.getElementById('defaultBgInfoText');
+      if (!infoBox || !infoText) return;
+      try {
+        const stored = localStorage.getItem(DEFAULT_BG_KEY);
+        if (stored) {
+          const defaultBg = JSON.parse(stored);
+          infoBox.style.display = 'block';
+          let text = '';
+          if (defaultBg.backgroundImage) {
+            const size = Math.round((defaultBg.backgroundImage.length / 1024));
+            text = `มีรูปภาพพื้นหลัง (${size} KB) · โหมด ${defaultBg.bgFit === 'cover' ? 'Cover' : 'Contain'}`;
+          } else {
+            text = 'ใช้ Gradient ม่วง-ทองอ่อน';
+          }
+          if (defaultBg.savedAt) {
+            const d = new Date(defaultBg.savedAt);
+            text += `<br>บันทึกเมื่อ: ${d.toLocaleDateString('th-TH')} ${d.toLocaleTimeString('th-TH')}`;
+          }
+          infoText.innerHTML = text;
+        } else {
+          infoBox.style.display = 'none';
+        }
+      } catch (e) {
+        infoBox.style.display = 'none';
+      }
+    }
+
+    function autoLoadDefaultBackground() {
+      try {
+        const stored = localStorage.getItem(DEFAULT_BG_KEY);
+        if (stored) {
+          const defaultBg = JSON.parse(stored);
+          currentData.backgroundImage = defaultBg.backgroundImage;
+          currentData.bgFit = defaultBg.bgFit || 'cover';
+          return true;
+        }
+      } catch (e) { console.warn(e); }
+      return false;
+    }
+    // ============ END DEFAULT BACKGROUND ============
+
+    function updateOverlay() {
+      const slider = document.getElementById('overlayOpacity');
+      const value = slider.value;
+      currentData.overlayOpacity = parseInt(value);
+      document.getElementById('overlayValue').textContent = value + '%';
+      document.getElementById('a4Overlay').style.background = 'rgba(45, 27, 58, ' + (value / 100) + ')';
+    }
+
+    function openPreviewModal() {
+      const modal = document.getElementById('previewModal');
+      const body = document.getElementById('previewModalBody');
+      const clone = document.getElementById('a4Container').cloneNode(true);
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+      clone.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'false');
+      body.innerHTML = ''; body.appendChild(clone);
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closePreviewModal() {
+      document.getElementById('previewModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('previewModal').addEventListener('click', function(e) {
+      if (e.target === this) closePreviewModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closePreviewModal(); closeCropModal(); }
+    });
+
+    function loadMainTemplate() {
+      try {
+        const stored = localStorage.getItem(TEMPLATE_KEY);
+        if (stored) {
+          const templateData = JSON.parse(stored);
+          if (confirm('ต้องการโหลดเทมเพลตหลักหรือไม่?')) {
+            currentData = { ...JSON.parse(JSON.stringify(defaultData)), ...templateData };
+            if (!currentData.crops) currentData.crops = JSON.parse(JSON.stringify(defaultData.crops));
+            applyDataToPreview(); checkOverflow();
+            showToast('📥 โหลดเทมเพลตหลักเรียบร้อย');
+          }
+        } else {
+          if (confirm('ยังไม่มีเทมเพลตหลัก ต้องการบันทึกเป็นเทมเพลตหลักหรือไม่?')) {
+            localStorage.setItem(TEMPLATE_KEY, JSON.stringify(currentData));
+            showToast('💾 บันทึกเป็นเทมเพลตหลักแล้ว');
+          }
+        }
+      } catch (e) { showToast('❌ ไม่สามารถโหลดเทมเพลตได้'); }
+    }
+    function clearMainTemplate() {
+      if (!confirm('ต้องการล้างเทมเพลตหลักหรือไม่?')) return;
+      localStorage.removeItem(TEMPLATE_KEY);
+      showToast('🗑️ ล้างเทมเพลตหลักแล้ว');
+    }
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+        showToast('💾 บันทึกข้อมูลเรียบร้อยแล้ว');
+      } catch (e) { showToast('❌ ไม่สามารถบันทึกได้'); }
+    }
+    function resetData() {
+      if (!confirm('ต้องการคืนค่าเริ่มต้นทั้งหมดหรือไม่?')) return;
+      currentData = JSON.parse(JSON.stringify(defaultData));
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('input[type="file"]').forEach(i => i.value = '');
+      applyDataToPreview();
+      showToast('↩️ คืนค่าเริ่มต้นเรียบร้อย');
+    }
+    function clearAllImages() {
+      if (!confirm('ต้องการล้างรูปภาพทั้งหมดหรือไม่?')) return;
+      ['mainImage1', 'mainImage2', 'img3', 'img4', 'img5'].forEach(k => {
+        currentData[k] = null;
+        currentData.crops[k] = { x: 50, y: 50, zoom: 100 };
+      });
+      currentData.backgroundImage = null;
+      document.getElementById('bgFile').value = '';
+      updateBackground();
+      ['main1', 'main2', 'img3', 'img4', 'img5'].forEach(id => setImageDisplay(id, null, null));
+      document.querySelectorAll('input[type="file"]:not(#bgFile)').forEach(i => i.value = '');
+      showToast('🗑️ ล้างรูปภาพทั้งหมดแล้ว');
+    }
+
+    function attachEventListeners() {
+      document.getElementById('orgNameInput').addEventListener('input', function(e) {
+        currentData.orgName = e.target.value;
+        const el = document.getElementById('orgName');
+        if (el) el.textContent = e.target.value;
+      });
+      document.getElementById('orgName').addEventListener('input', function(e) {
+        currentData.orgName = e.target.textContent;
+        document.getElementById('orgNameInput').value = e.target.textContent;
+      });
+
+      document.getElementById('newsTitle').addEventListener('input', function(e) {
+        currentData.newsTitle = e.target.value;
+        document.getElementById('newsTitleDisplay').textContent = e.target.value;
+      });
+      document.getElementById('newsContent').addEventListener('input', function(e) {
+        currentData.newsContent = e.target.value;
+        document.getElementById('newsContentDisplay').textContent = e.target.value;
+        checkOverflow();
+      });
+      document.getElementById('newsTitleDisplay').addEventListener('input', function(e) {
+        currentData.newsTitle = e.target.textContent;
+        document.getElementById('newsTitle').value = e.target.textContent;
+      });
+      document.getElementById('newsContentDisplay').addEventListener('input', function(e) {
+        currentData.newsContent = e.target.textContent;
+        document.getElementById('newsContent').value = e.target.textContent;
+        checkOverflow();
+      });
+      setupDragAndDrop();
+      window.addEventListener('resize', () => {
+        checkOverflow();
+        if (window.innerWidth > 768) document.getElementById('sidebar').classList.remove('open');
+      });
+    }
+
+    function setupDragAndDrop() {
+      const boxes = [
+        { id: 'mainImageBox1', target: 'mainImage1' },
+        { id: 'mainImageBox2', target: 'mainImage2' },
+        { id: 'imgBox3', target: 'img3' },
+        { id: 'imgBox4', target: 'img4' },
+        { id: 'imgBox5', target: 'img5' }
+      ];
+      boxes.forEach(box => {
+        const el = document.getElementById(box.id);
+        if (!el) return;
+        el.addEventListener('dragover', e => { e.preventDefault(); el.style.borderColor = '#b8860b'; });
+        el.addEventListener('dragleave', e => { e.preventDefault(); el.style.borderColor = '#c9a84c'; });
+        el.addEventListener('drop', e => {
+          e.preventDefault(); el.style.borderColor = '#c9a84c';
+          if (e.dataTransfer.files.length > 0) processImageFile(e.dataTransfer.files[0], box.target, 'crop');
+        });
+      });
+    }
+
+    function printA4() {
+      closePreviewModal();
+      document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.setAttribute('data-was-editable', 'true');
+        el.contentEditable = 'false';
+      });
+      window.print();
+      document.querySelectorAll('[data-was-editable]').forEach(el => {
+        el.contentEditable = 'true';
+        el.removeAttribute('data-was-editable');
+      });
+    }
+
+    function downloadPNG() {
+      closePreviewModal();
+      const container = document.getElementById('a4Container');
+      document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.setAttribute('data-was-editable', 'true');
+        el.contentEditable = 'false';
+      });
+      showToast('📸 กำลังสร้างภาพ PNG...');
+      html2canvas(container, {
+        scale: 3, useCORS: true, allowTaint: true,
+        backgroundColor: '#ffffff', logging: false,
+        width: container.offsetWidth, height: container.offsetHeight,
+        imageTimeout: 0, foreignObjectRendering: false
+      }).then(canvas => {
+        document.querySelectorAll('[data-was-editable]').forEach(el => {
+          el.contentEditable = 'true';
+          el.removeAttribute('data-was-editable');
+        });
+        const link = document.createElement('a');
+        link.download = 'DSD8_Nakhonsawan_News.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('✅ ดาวน์โหลด PNG เรียบร้อย');
+      }).catch(err => {
+        document.querySelectorAll('[data-was-editable]').forEach(el => {
+          el.contentEditable = 'true';
+          el.removeAttribute('data-was-editable');
+        });
+        console.error(err); showToast('❌ ไม่สามารถสร้าง PNG ได้');
+      });
+    }
+
+    function zoomIn() { currentZoom = Math.min(currentZoom + 0.1, 2); document.getElementById('a4Container').style.transform = 'scale(' + currentZoom + ')'; }
+    function zoomOut() { currentZoom = Math.max(currentZoom - 0.1, 0.4); document.getElementById('a4Container').style.transform = 'scale(' + currentZoom + ')'; }
+    function zoomReset() { currentZoom = 1; document.getElementById('a4Container').style.transform = 'scale(1)'; }
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message; toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function checkOverflow() {
+      const contentText = document.getElementById('newsContentDisplay');
+      const warning = document.getElementById('overflowWarning');
+      if (!contentText) return;
+      const isOverflowing = contentText.scrollHeight > contentText.clientHeight - 5;
+      warning.classList.toggle('show', isOverflowing);
+    }
+
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveData(); }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') { e.preventDefault(); printA4(); }
+    });
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
